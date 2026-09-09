@@ -24,3 +24,14 @@ All notable changes to the Linkedinify™ project will be documented in this fil
 - Built full page layout connecting input studio to generated results.
 - Enhanced mobile and desktop responsiveness.
 - Added `LoadingState` skeleton card with rotating status ticker.
+
+## Phase 1 Revision — Minimal Dark Redesign & Streamlined Output
+
+- Rebuilt design system around a pure black background (`#000000`) and white text (`#FFFFFF`) with minimal functional color.
+- Removed all hardcoded example sentences and deleted `ExampleChips.tsx` for a clean, user-driven empty input state.
+- Removed marketing and hero copy blocks ("Executive Narrative Studio") in favor of a minimal, clean header.
+- Completely removed `RealityCheckCard.tsx`, `StatsGrid.tsx`, and associated stats calculations/stubs to focus strictly on generated text.
+- Simplified `LinkedInPostCard.tsx` down to clean plain text output with retained functional `CopyButton`.
+- Replaced the 6-button persona grid with a compact chat-model-switcher style `ModeSelector` offering exactly 3 modes: LinkedInify, CEO Mode, and Maximum Bullshit.
+- Cleaned up repository tracking: removed `plan.md` from the remote repository while preserving it locally in `.gitignore`.
+
