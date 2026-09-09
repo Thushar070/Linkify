@@ -11,7 +11,8 @@ import GenerateButton from "@/components/GenerateButton";
 import LinkedInPostCard from "@/components/LinkedInPostCard";
 import StatsGrid from "@/components/StatsGrid";
 import RealityCheckCard from "@/components/RealityCheckCard";
-import { Sparkles, RotateCcw, Share2 } from "lucide-react";
+import LoadingState from "@/components/LoadingState";
+import { Sparkles, RotateCcw } from "lucide-react";
 
 export default function Home() {
   const [sentence, setSentence] = useState("");
@@ -148,8 +149,15 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Results section (hidden until generated) */}
-        {hasGenerated && (
+        {/* Loading State */}
+        {isLoading && (
+          <section className="pt-4 border-t border-border/80">
+            <LoadingState />
+          </section>
+        )}
+
+        {/* Results section (hidden until generated and not loading) */}
+        {!isLoading && hasGenerated && (
           <section
             className="space-y-6 pt-4 border-t border-border/80 animate-in fade-in duration-300"
             aria-label="Generated Results"
