@@ -13,7 +13,7 @@ interface InputCardProps {
 export default function InputCard({
   value,
   onChange,
-  placeholder = "What happened today?",
+  placeholder = "e.g. I accidentally made eye contact with a coworker by the water cooler...",
   disabled = false,
 }: InputCardProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -21,26 +21,35 @@ export default function InputCard({
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${Math.max(84, textareaRef.current.scrollHeight)}px`;
+      const minHeight = window.innerWidth < 640 ? 160 : 200;
+      textareaRef.current.style.height = `${Math.max(minHeight, textareaRef.current.scrollHeight)}px`;
     }
   }, [value]);
 
   return (
-    <div className="bg-surface rounded-linkedin border border-border p-4 sm:p-5 shadow-xs interactive-card">
-      <div className="flex items-center gap-2 mb-3">
-        <div className="flex items-center justify-center w-7 h-7 rounded-full bg-surface-subtle border border-border text-text">
-          <PenLine className="w-3.5 h-3.5" />
+    <div className="bg-surface/90 rounded-2xl border border-neutral-800 p-5 sm:p-7 md:p-8 shadow-2xl transition-all duration-300 focus-within:border-accent/80 focus-within:ring-1 focus-within:ring-accent/80 focus-within:shadow-[0_0_35px_rgba(229,169,60,0.18)]">
+      {/* Header bar of textarea */}
+      <div className="flex items-center justify-between gap-3 mb-4">
+        <div className="flex items-center gap-2.5">
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-neutral-900 border border-neutral-800 text-amber-400 shrink-0">
+            <PenLine className="w-4 h-4" />
+          </div>
+          <div>
+            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+              The Everyday Event
+            </h2>
+            <p className="text-xs sm:text-sm text-text-muted">
+              What ordinary thing did you do today? Keep it factual.
+            </p>
+          </div>
         </div>
-        <div>
-          <h2 className="text-sm font-semibold text-text tracking-tight">
-            Event Description
-          </h2>
-          <p className="text-xs text-text-muted">
-            Enter what occurred in plain language
-          </p>
-        </div>
+
+        <span className="text-xs sm:text-sm font-mono text-neutral-400 font-medium">
+          {value.length}/300
+        </span>
       </div>
 
+      {/* Centerpiece Textarea */}
       <div className="relative">
         <textarea
           ref={textareaRef}
@@ -49,13 +58,9 @@ export default function InputCard({
           placeholder={placeholder}
           disabled={disabled}
           maxLength={300}
-          className="w-full resize-none overflow-hidden rounded-md border border-border bg-surface-subtle p-3 text-sm text-text placeholder:text-text-subtle focus:bg-surface focus:border-accent focus:outline-hidden focus:ring-1 focus:ring-accent focus:shadow-[0_0_15px_rgba(229,169,60,0.15)] transition-all duration-200"
-          style={{ minHeight: "84px" }}
+          className="w-full resize-none overflow-hidden rounded-xl border border-neutral-800/80 bg-[#080808] p-4 sm:p-5 md:p-6 text-base sm:text-xl md:text-2xl text-white placeholder:text-neutral-600 focus:bg-[#0a0a0a] focus:border-transparent focus:outline-hidden leading-relaxed font-normal transition-all duration-200"
+          style={{ minHeight: "180px" }}
         />
-        <div className="flex justify-between items-center mt-1.5 px-0.5 text-xs text-text-subtle">
-          <span>Keep it simple and factual.</span>
-          <span>{value.length}/300</span>
-        </div>
       </div>
     </div>
   );
