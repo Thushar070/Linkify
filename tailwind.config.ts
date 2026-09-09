@@ -9,36 +9,36 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#F4F2EE",
+        background: "#000000",
         surface: {
-          DEFAULT: "#FFFFFF",
-          subtle: "#F9F8F6",
-          hover: "#F3F2EF",
+          DEFAULT: "#0D0D0D",
+          subtle: "#171717",
+          hover: "#222222",
         },
         border: {
-          DEFAULT: "#E0DFDC",
-          subtle: "#EBEAE7",
+          DEFAULT: "#262626",
+          subtle: "#1A1A1A",
         },
         text: {
-          DEFAULT: "#191919",
-          muted: "#666666",
-          subtle: "#8C8C8C",
+          DEFAULT: "#FFFFFF",
+          muted: "#A3A3A3",
+          subtle: "#666666",
         },
         accent: {
-          DEFAULT: "#C27803",
-          hover: "#A16207",
-          subtle: "#FEF3C7",
-          foreground: "#FFFFFF",
+          DEFAULT: "#E5A93C",
+          hover: "#D97706",
+          subtle: "#241A0B",
+          foreground: "#000000",
         },
         "accent-warn": {
-          DEFAULT: "#DC2626",
-          hover: "#B91C1C",
-          subtle: "#FEE2E2",
+          DEFAULT: "#EF4444",
+          hover: "#DC2626",
+          subtle: "#261212",
         },
         "accent-success": {
-          DEFAULT: "#0A6E4E",
-          hover: "#08573D",
-          subtle: "#DEF7EC",
+          DEFAULT: "#22C55E",
+          hover: "#16A34A",
+          subtle: "#0F2615",
         },
       },
       fontFamily: {
