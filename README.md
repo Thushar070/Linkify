@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Linkedinify™
+
+> Turning nothing into a professional achievement.
+
+Linkedinify™ is an AI web app that takes mundane everyday occurrences (e.g. *"I ate an apple"*, *"I fixed a typo"*) and elevates them into unbearable, multi-paragraph LinkedIn thought leadership posts complete with metrics, corporate buzzwords, and reality checks.
+
+## Tech Stack
+
+- **Framework:** Next.js (App Router) + React + TypeScript
+- **Styling:** Tailwind CSS (custom LinkedIn-native color theme with warm amber accent)
+- **Icons:** [lucide-react](https://lucide.dev)
+- **Design:** Clean LinkedIn card aesthetic (off-white background, crisp borders, zero blue/purple/violet)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/Thushar070/Linkify.git
+cd Linkify
+
+# Install dependencies
+npm install
+
+# Run local development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Building for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+## Architecture & Roadmap
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [plan.md](plan.md) for the phased implementation plan and [CHANGELOG.md](CHANGELOG.md) for progress tracking.
