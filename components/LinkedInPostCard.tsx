@@ -8,6 +8,7 @@ import {
   Send,
   Award,
 } from "lucide-react";
+import CopyButton from "./CopyButton";
 
 export const MOCK_POST = `Most people saw an apple. 🍎
 
@@ -45,6 +46,7 @@ export default function LinkedInPostCard({
   timestamp = "Just now",
   headerAction,
 }: LinkedInPostCardProps) {
+  const actionButton = headerAction !== undefined ? headerAction : <CopyButton text={postText} />;
   return (
     <div className="bg-surface rounded-linkedin border border-border shadow-xs overflow-hidden">
       {/* Header row */}
@@ -80,7 +82,7 @@ export default function LinkedInPostCard({
 
         {/* Top right actions */}
         <div className="flex items-center gap-1 shrink-0">
-          {headerAction}
+          {actionButton}
           <button
             type="button"
             className="p-1.5 rounded-full hover:bg-surface-subtle text-text-muted transition-colors cursor-pointer"
