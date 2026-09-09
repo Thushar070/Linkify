@@ -8,9 +8,10 @@ import LinkedInPostCard from "@/components/LinkedInPostCard";
 import LoadingState from "@/components/LoadingState";
 import EmptyState from "@/components/EmptyState";
 import AmbientNetwork3D from "@/components/AmbientNetwork3D";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { AlertCircle, RotateCcw } from "lucide-react";
 
-export default function Home() {
+function HomeContent() {
   const [sentence, setSentence] = useState("");
   const [mode, setMode] = useState<LinkedinMode>("linkedinify");
   const [hasGenerated, setHasGenerated] = useState(false);
@@ -219,3 +220,12 @@ export default function Home() {
     </div>
   );
 }
+
+export default function Home() {
+  return (
+    <ErrorBoundary>
+      <HomeContent />
+    </ErrorBoundary>
+  );
+}
+
