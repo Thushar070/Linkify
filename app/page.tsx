@@ -102,7 +102,7 @@ export default function Home() {
         {/* Results section (hidden until generated and not loading) */}
         {!isLoading && hasGenerated && (
           <section
-            className="space-y-6 pt-4 border-t border-border/80 animate-in fade-in duration-300"
+            className="space-y-6 pt-4 border-t border-border/80 animate-slide-up-fade"
             aria-label="Generated Results"
           >
             {/* LinkedIn Post Card */}
