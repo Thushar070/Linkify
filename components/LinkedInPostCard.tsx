@@ -28,7 +28,7 @@ export default function LinkedInPostCard({
   postText = MOCK_POST,
 }: LinkedInPostCardProps) {
   return (
-    <div className="bg-surface rounded-linkedin border border-border shadow-xs overflow-hidden">
+    <div className="bg-surface rounded-linkedin border border-border shadow-xs overflow-hidden interactive-card">
       {/* Header with title and copy button */}
       <div className="px-4 sm:px-5 py-3 border-b border-border flex items-center justify-between">
         <span className="text-xs font-medium text-text-muted">

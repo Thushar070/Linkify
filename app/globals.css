@@ -51,3 +51,13 @@ body {
 .animate-slide-up-fade {
   animation: slideUpFade 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+.interactive-card {
+  transition: transform 200ms ease-out, border-color 200ms ease-out;
+}
+
+.interactive-card:hover {
+  transform: scale(1.005);
+  border-color: #383838;
+}
+

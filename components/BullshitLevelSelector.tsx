@@ -52,7 +52,7 @@ export default function BullshitLevelSelector({
   const activeOption = BULLSHIT_LEVELS[activeIndex] || BULLSHIT_LEVELS[1];
 
   return (
-    <div className="bg-surface rounded-linkedin border border-border p-4 sm:p-5 shadow-xs">
+    <div className="bg-surface rounded-linkedin border border-border p-4 sm:p-5 shadow-xs interactive-card">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className="flex items-center justify-center w-7 h-7 rounded-full bg-surface-subtle border border-border text-text">

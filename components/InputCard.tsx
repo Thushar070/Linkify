@@ -26,7 +26,7 @@ export default function InputCard({
   }, [value]);
 
   return (
-    <div className="bg-surface rounded-linkedin border border-border p-4 sm:p-5 shadow-xs transition-all duration-200">
+    <div className="bg-surface rounded-linkedin border border-border p-4 sm:p-5 shadow-xs interactive-card">
       <div className="flex items-center gap-2 mb-3">
         <div className="flex items-center justify-center w-7 h-7 rounded-full bg-surface-subtle border border-border text-text">
           <PenLine className="w-3.5 h-3.5" />
