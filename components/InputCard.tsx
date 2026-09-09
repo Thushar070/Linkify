@@ -51,17 +51,35 @@ export default function InputCard({
 
       {/* Centerpiece Textarea */}
       <div className="relative">
+        <label htmlFor="everyday-event-input" className="sr-only">
+          The everyday event to LinkedInify
+        </label>
         <textarea
+          id="everyday-event-input"
+          name="everyday-event-input"
           ref={textareaRef}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           disabled={disabled}
           maxLength={300}
-          className="w-full resize-none overflow-hidden rounded-xl border border-neutral-800/80 bg-[#080808] p-4 sm:p-5 md:p-6 text-base sm:text-xl md:text-2xl text-white placeholder:text-neutral-600 focus:bg-[#0a0a0a] focus:border-transparent focus:outline-hidden leading-relaxed font-normal transition-all duration-200"
+          aria-label="The everyday event to LinkedInify"
+          aria-describedby={value.trim().length > 0 && value.trim().length < 5 ? "short-input-nudge" : undefined}
+          className="w-full resize-none overflow-hidden rounded-xl border border-neutral-800/80 bg-[#080808] p-4 sm:p-5 md:p-6 text-base sm:text-xl md:text-2xl text-white placeholder:text-neutral-600 focus:bg-[#0a0a0a] focus:border-amber-500/50 focus:outline-hidden leading-relaxed font-normal transition-all duration-200"
           style={{ minHeight: "180px" }}
         />
       </div>
+
+      {/* Soft nudge for short/vague inputs */}
+      {value.trim().length > 0 && value.trim().length < 5 && (
+        <p
+          id="short-input-nudge"
+          className="mt-3 text-xs sm:text-sm text-amber-400/90 font-medium flex items-center gap-1.5 animate-slide-up-fade"
+        >
+          <span>✦</span>
+          <span>Give us a little more to synergize with (at least 5 characters of mundane reality).</span>
+        </p>
+      )}
     </div>
   );
 }

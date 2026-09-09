@@ -6,6 +6,7 @@ import ModeSelector, { LinkedinMode } from "@/components/ModeSelector";
 import GenerateButton from "@/components/GenerateButton";
 import LinkedInPostCard from "@/components/LinkedInPostCard";
 import LoadingState from "@/components/LoadingState";
+import EmptyState from "@/components/EmptyState";
 import AmbientNetwork3D from "@/components/AmbientNetwork3D";
 import { AlertCircle, RotateCcw } from "lucide-react";
 
@@ -117,7 +118,7 @@ export default function Home() {
               <GenerateButton
                 onClick={handleGenerate}
                 loading={isLoading}
-                disabled={!sentence.trim()}
+                disabled={sentence.trim().length < 5}
                 text={hasGenerated ? "Regenerate Post" : "Linkedinify"}
               />
 
@@ -126,7 +127,7 @@ export default function Home() {
                   type="button"
                   onClick={handleReset}
                   disabled={isLoading}
-                  className="px-5 py-3.5 rounded-xl border border-neutral-800 bg-surface text-neutral-300 hover:text-white hover:bg-surface-hover text-sm sm:text-base font-semibold inline-flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                  className="px-5 py-3.5 rounded-xl border border-neutral-800 bg-surface text-neutral-300 hover:text-white hover:bg-surface-hover text-sm sm:text-base font-semibold inline-flex items-center justify-center gap-2 transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-500/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 >
                   <RotateCcw className="w-4 h-4 text-neutral-400" />
                   <span>Reset</span>
@@ -146,18 +147,20 @@ export default function Home() {
         {/* Error notification banner */}
         {error && (
           <section
-            className="p-5 rounded-xl border border-neutral-800 bg-neutral-950 text-neutral-200 flex items-start sm:items-center justify-between gap-4 text-sm sm:text-base animate-slide-up-fade shadow-lg"
+            className="p-4 sm:p-5 rounded-xl border border-amber-500/20 bg-amber-950/20 text-neutral-200 flex items-start sm:items-center justify-between gap-4 text-sm sm:text-base animate-slide-up-fade shadow-lg"
             role="alert"
           >
-            <div className="flex items-center gap-3">
-              <AlertCircle className="w-5 h-5 text-amber-500 shrink-0" />
-              <span>{error}</span>
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0">
+                <AlertCircle className="w-4 h-4 text-amber-400" />
+              </div>
+              <span className="text-neutral-200 text-sm sm:text-base font-medium leading-relaxed">{error}</span>
             </div>
             <button
               type="button"
               onClick={handleGenerate}
-              disabled={isLoading}
-              className="text-xs sm:text-sm font-bold text-accent hover:underline shrink-0 cursor-pointer disabled:opacity-50"
+              disabled={isLoading || sentence.trim().length < 5}
+              className="px-3 py-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 text-xs sm:text-sm font-semibold transition-colors cursor-pointer shrink-0 disabled:opacity-50 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-500/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             >
               Try again
             </button>
@@ -183,6 +186,16 @@ export default function Home() {
               isRegenerating={isLoading}
             />
           </section>
+        )}
+
+        {/* Empty State before any generation has occurred */}
+        {!isLoading && !hasGenerated && (
+          <EmptyState
+            onSelectPrompt={(selectedPrompt) => {
+              setSentence(selectedPrompt);
+              setError(null);
+            }}
+          />
         )}
       </main>
 

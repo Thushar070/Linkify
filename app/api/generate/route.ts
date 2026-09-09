@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       mode?: unknown;
     };
 
-    // 1. Validate sentence presence and type
+    // 1. Validate sentence presence and minimum length
     if (typeof sentence !== "string" || sentence.trim().length === 0) {
       return NextResponse.json(
         { error: "Please enter a sentence to Linkedinify." },
@@ -40,7 +40,17 @@ export async function POST(req: NextRequest) {
 
     const trimmedSentence = sentence.trim();
 
-    // 2. Validate input length to prevent token abuse
+    if (trimmedSentence.length < 5) {
+      return NextResponse.json(
+        {
+          error:
+            "Please provide a bit more detail (at least 5 characters) so we have something to synergize with.",
+        },
+        { status: 400 }
+      );
+    }
+
+    // 2. Validate input maximum length to prevent token abuse
     if (trimmedSentence.length > 500) {
       return NextResponse.json(
         { error: "Input is too long. Please keep it under 500 characters." },
