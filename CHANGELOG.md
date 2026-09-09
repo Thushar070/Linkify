@@ -35,3 +35,25 @@ All notable changes to the Linkedinify™ project will be documented in this fil
 - Replaced the 6-button persona grid with a compact chat-model-switcher style `ModeSelector` offering exactly 3 modes: LinkedInify, CEO Mode, and Maximum Bullshit.
 - Cleaned up repository tracking: removed `plan.md` from the remote repository while preserving it locally in `.gitignore`.
 
+## Phase 2 — Deterministic Agent Helpers & UI Motion
+
+### Part A: UI Polish & Motion Pass
+- Replaced flat black background with subtle vertical/radial gradient overlay and fine grain noise texture.
+- Enlarged and emphasized the `Linkedinify` wordmark as a bold anchor for the page.
+- Implemented smooth sliding pill indicators for both `ModeSelector` and `BullshitLevelSelector` with spring transitions and intensity color coding (neutral white, amber, red-orange gradient).
+- Added auto-grow height and amber focus glow to `InputCard` textarea.
+- Enhanced `GenerateButton` with smooth state morphing and amber hover glow shadow.
+- Added scale pulse and checkmark morphing animation to `CopyButton`.
+- Added `slideUpFade` reveal animation to post result section.
+- Added subtle scale and border brightening hover states to all cards across the application.
+
+### Part B: Deterministic Agent Logic
+- Defined clean shared types in `types/index.ts` stripped of legacy stats.
+- Created `analyzeEvent` helper with keyword-based category detection across 8 event categories (food, coding, gym, sleep, idle, work, social, generic).
+- Built `selectBuzzwords` lookup dictionary returning curated executive jargon per category.
+- Built `selectEmojis` selector with density scaling by inflation level.
+- Built `generateHashtags` generator combining category-specific tags with generic thought-leadership anchors.
+- Orchestrated deterministic agent pipeline in `runAgentPipeline`.
+- Added typewriter streaming text reveal effect to `LinkedInPostCard`.
+- Verified category detection and pipeline behavior with internal test cases.
+
