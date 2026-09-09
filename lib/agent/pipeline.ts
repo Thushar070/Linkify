@@ -1,20 +1,41 @@
-import { LinkedinifyInput, LinkedinifyResult } from "@/types";
+import { EventIngredients, LinkedinifyInput, LinkedinifyResult, LinkedinMode } from "@/types";
 import { analyzeEvent } from "./analyzeEvent";
 import { selectBuzzwords } from "./selectBuzzwords";
 import { selectEmojis } from "./selectEmojis";
 import { generateHashtags } from "./generateHashtags";
 
 /**
- * Generates a deterministic mock post prose based on category and selected mode.
- * In Phase 3, this will be replaced by the live LLM completion.
+ * Computes deterministic ingredients (category, buzzwords, emojis, hashtags)
+ * from an input sentence and mode.
  */
-function buildDeterministicPost(
+export function getEventIngredients(
+  sentence: string,
+  mode: LinkedinMode = "linkedinify"
+): EventIngredients {
+  const category = analyzeEvent(sentence);
+  const buzzwords = selectBuzzwords(category, mode);
+  const emojis = selectEmojis(category, mode);
+  const hashtags = generateHashtags(category, mode);
+
+  return {
+    category,
+    buzzwords,
+    emojis,
+    hashtags,
+  };
+}
+
+/**
+ * Generates a deterministic mock post prose based on category and selected mode.
+ * Serves as fallback or fast preview.
+ */
+export function buildDeterministicPost(
   sentence: string,
   category: string,
   buzzwords: string[],
   emojis: string[],
   hashtags: string[],
-  mode: string
+  mode: LinkedinMode
 ): string {
   const emojiString = emojis.slice(0, 3).join(" ");
   const hashtagString = hashtags.join(" ");
@@ -90,28 +111,24 @@ ${hashtagString}`;
  * and hashtag generation into a cohesive LinkedinifyResult.
  */
 export function runAgentPipeline(input: LinkedinifyInput): LinkedinifyResult {
-  const category = analyzeEvent(input.sentence);
-  const buzzwords = selectBuzzwords(category, input.bullshitLevel);
-  const emojis = selectEmojis(category, input.bullshitLevel);
-  const hashtags = generateHashtags(category, input.bullshitLevel);
+  const ingredients = getEventIngredients(input.sentence, input.mode);
 
   const postText = buildDeterministicPost(
     input.sentence,
-    category,
-    buzzwords,
-    emojis,
-    hashtags,
+    ingredients.category,
+    ingredients.buzzwords,
+    ingredients.emojis,
+    ingredients.hashtags,
     input.mode
   );
 
   return {
     originalSentence: input.sentence,
-    bullshitLevel: input.bullshitLevel,
     mode: input.mode,
-    category,
+    category: ingredients.category,
     postText,
-    buzzwords,
-    emojis,
-    hashtags,
+    buzzwords: ingredients.buzzwords,
+    emojis: ingredients.emojis,
+    hashtags: ingredients.hashtags,
   };
 }

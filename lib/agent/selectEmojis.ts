@@ -1,4 +1,4 @@
-import { EventCategory, BullshitLevel } from "@/types";
+import { EventCategory, LinkedinMode } from "@/types";
 
 const EMOJI_DICTIONARY: Record<EventCategory, string[]> = {
   food: ["🍎", "☕", "🍽️", "🌱", "🥗", "🥑", "⚡", "🎯"],
@@ -11,22 +11,22 @@ const EMOJI_DICTIONARY: Record<EventCategory, string[]> = {
   generic: ["🚀", "💡", "📈", "🎯", "🔑", "✨", "💼", "🔥"],
 };
 
-const EMOJI_DENSITY_MAP: Record<BullshitLevel, number> = {
-  mild: 2,
-  corporate: 3,
-  influencer: 5,
-  "final-boss": 8,
+const MODE_EMOJI_COUNT_MAP: Record<LinkedinMode, number> = {
+  ceo: 2,
+  linkedinify: 3,
+  "max-bs": 6,
 };
 
 /**
- * Selects emojis tailored to the category with density scaled by inflation level.
+ * Selects emojis tailored to the category with density scaled by mode.
  */
 export function selectEmojis(
   category: EventCategory,
-  level: BullshitLevel = "corporate"
+  mode: LinkedinMode = "linkedinify"
 ): string[] {
   const pool = EMOJI_DICTIONARY[category] || EMOJI_DICTIONARY.generic;
-  const count = EMOJI_DENSITY_MAP[level] || 3;
+  const count = MODE_EMOJI_COUNT_MAP[mode] || 3;
 
   return pool.slice(0, count);
 }
+

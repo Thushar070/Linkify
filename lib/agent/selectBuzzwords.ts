@@ -1,4 +1,4 @@
-import { EventCategory, BullshitLevel } from "@/types";
+import { EventCategory, LinkedinMode } from "@/types";
 
 const BUZZWORD_DICTIONARY: Record<EventCategory, string[]> = {
   food: [
@@ -77,23 +77,22 @@ const BUZZWORD_DICTIONARY: Record<EventCategory, string[]> = {
   ],
 };
 
-const LEVEL_COUNT_MAP: Record<BullshitLevel, number> = {
-  mild: 2,
-  corporate: 3,
-  influencer: 4,
-  "final-boss": 6,
+const MODE_COUNT_MAP: Record<LinkedinMode, number> = {
+  linkedinify: 3,
+  ceo: 4,
+  "max-bs": 6,
 };
 
 /**
- * Selects appropriate buzzwords based on the event category and bullshit intensity level.
+ * Selects appropriate buzzwords based on the event category and mode.
  */
 export function selectBuzzwords(
   category: EventCategory,
-  level: BullshitLevel = "corporate"
+  mode: LinkedinMode = "linkedinify"
 ): string[] {
   const pool = BUZZWORD_DICTIONARY[category] || BUZZWORD_DICTIONARY.generic;
-  const count = LEVEL_COUNT_MAP[level] || 3;
+  const count = MODE_COUNT_MAP[mode] || 3;
 
-  // Select unique buzzwords from the category pool
   return pool.slice(0, count);
 }
+

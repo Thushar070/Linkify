@@ -1,4 +1,4 @@
-import { EventCategory, BullshitLevel } from "@/types";
+import { EventCategory, LinkedinMode } from "@/types";
 
 const CATEGORY_HASHTAGS: Record<EventCategory, string[]> = {
   food: [
@@ -72,13 +72,13 @@ const GENERIC_ANCHORS = [
  */
 export function generateHashtags(
   category: EventCategory,
-  level: BullshitLevel = "corporate"
+  mode: LinkedinMode = "linkedinify"
 ): string[] {
   const categoryPool =
     CATEGORY_HASHTAGS[category] || CATEGORY_HASHTAGS.generic;
 
-  const categoryTagCount = level === "final-boss" ? 4 : 3;
-  const genericTagCount = level === "final-boss" ? 4 : 2;
+  const categoryTagCount = mode === "max-bs" ? 4 : mode === "ceo" ? 2 : 3;
+  const genericTagCount = mode === "max-bs" ? 4 : 2;
 
   const selectedCategoryTags = categoryPool.slice(0, categoryTagCount);
   const selectedGenericTags = GENERIC_ANCHORS.slice(0, genericTagCount);
@@ -86,3 +86,4 @@ export function generateHashtags(
   // Return combined unique list
   return Array.from(new Set([...selectedCategoryTags, ...selectedGenericTags]));
 }
+

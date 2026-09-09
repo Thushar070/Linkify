@@ -1,5 +1,3 @@
-export type BullshitLevel = "mild" | "corporate" | "influencer" | "final-boss";
-
 export type LinkedinMode = "linkedinify" | "ceo" | "max-bs";
 
 export type EventCategory =
@@ -21,13 +19,11 @@ export interface EventIngredients {
 
 export interface LinkedinifyInput {
   sentence: string;
-  bullshitLevel: BullshitLevel;
   mode: LinkedinMode;
 }
 
 export interface LinkedinifyResult {
   originalSentence: string;
-  bullshitLevel: BullshitLevel;
   mode: LinkedinMode;
   category: EventCategory;
   postText: string;

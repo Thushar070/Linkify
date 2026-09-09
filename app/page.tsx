@@ -2,9 +2,6 @@
 
 import React, { useState } from "react";
 import InputCard from "@/components/InputCard";
-import BullshitLevelSelector, {
-  BullshitLevel,
-} from "@/components/BullshitLevelSelector";
 import ModeSelector, { LinkedinMode } from "@/components/ModeSelector";
 import GenerateButton from "@/components/GenerateButton";
 import LinkedInPostCard from "@/components/LinkedInPostCard";
@@ -14,7 +11,6 @@ import { runAgentPipeline } from "@/lib/agent/pipeline";
 
 export default function Home() {
   const [sentence, setSentence] = useState("");
-  const [bullshitLevel, setBullshitLevel] = useState<BullshitLevel>("corporate");
   const [mode, setMode] = useState<LinkedinMode>("linkedinify");
   const [hasGenerated, setHasGenerated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +22,6 @@ export default function Home() {
     setTimeout(() => {
       const result = runAgentPipeline({
         sentence,
-        bullshitLevel,
         mode,
       });
       setGeneratedPostText(result.postText);
@@ -60,12 +55,6 @@ export default function Home() {
           <InputCard
             value={sentence}
             onChange={setSentence}
-            disabled={isLoading}
-          />
-
-          <BullshitLevelSelector
-            value={bullshitLevel}
-            onChange={setBullshitLevel}
             disabled={isLoading}
           />
 
