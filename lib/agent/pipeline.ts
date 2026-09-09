@@ -44,63 +44,66 @@ export function buildDeterministicPost(
   const b3 = buzzwords[2] || "value realization";
 
   if (mode === "ceo") {
-    return `When evaluating capital allocation, most managers miss the foundational baseline. ${emojis[0] || "💼"}
+    return `Execution isn't a democracy. It's a compounding discipline. ${emojis[0] || "💼"}
 
-Yesterday: "${sentence}"
+Yesterday's operational event:
+"${sentence}"
 
-To the uninitiated, this was an isolated everyday action.
-To leadership, it was a masterclass in ${b1}.
+To average managers, this looks like mundane trivia.
+To high-performing operators, it's an asymmetric inflection in ${b1}.
 
-Executive Takeaways:
-1. Ruthless Prioritization: Zero latency between intent and execution.
-2. Compounding Output: Turning baseline events into ${b2}.
-3. Capital Discipline: Extracting maximal ROI from every micro-action.
+3 Executive Directives:
+1. Capital Discipline: Zero latency between observation and ${b2}.
+2. Friction Deprecation: Eliminate legacy bottlenecks before they compound.
+3. Moat Expansion: Systematize every action into repeatable ${b3}.
 
-Execution isn't a conversation. It's the only metric that compounds.
+We don't negotiate with operational debt.
+Ship or get displaced.
 
 ${hashtagString}`;
   }
 
   if (mode === "max-bs") {
-    return `I am profoundly humbled and electrified to share this inflection point. ${emojiString}
+    return `Read that again. Now let it marinate in your prefrontal cortex. ${emojiString}
 
-Most individuals would summarize this as:
+You thought this was merely:
 "${sentence}"
 
-How painfully short-sighted.
+How cosmically short-sighted.
 
-We didn't merely engage in an everyday occurrence. We orchestrated an end-to-end multi-stakeholder ecosystem of ${b1}, ${b2}, and quantum ${b3}.
+We didn't just observe an occurrence. We co-created a quantum multi-stakeholder paradigm of ${b1}, neural ${b2}, and metaphysical ${b3}.
 
-3 Paradigm-Shifting Lessons:
-• Inflection 1: Radical ownership over baseline reality.
-• Inflection 2: Deconstruct legacy friction through real-time agility.
-• Inflection 3: Scale the outcome or systematically deprecate the initiative.
+3 Quantum Mindset Shifts:
+🌐 Vector 1: Synergize baseline realities into omni-channel transcendence.
+🧬 Vector 2: Deprecate existential bandwidth friction through radical agility.
+🚀 Vector 3: Holistically productize your energetic ROI across the corporate multiverse.
 
-If you aren't optimizing every second of your existence, what are you even building?
+Are you synergizing your human capital, or merely occupying spacetime?
 
-Agree? 👇
+Thoughts from the quantum realm? 👇
 
 ${hashtagString}`;
   }
 
   // Default: linkedinify mode
-  return `Most people see an ordinary task. ${emojis[0] || "🚀"}
-
-I saw a critical inflection point in strategic operational execution.
+  return `I almost didn't post this today. ${emojis[0] || "🚀"}
 
 Yesterday: "${sentence}"
 
-Here is what 99% of professionals fail to realize about ${b1}:
+Most people would brush it off and keep scrolling.
+I stopped. I took a deep breath. And I asked myself:
+"What is this moment trying to teach me about ${b1}?"
 
-1. Autonomous Execution: Waiting for instructions is a legacy framework. Elite performers optimize ${b2} in real time.
-2. High-Velocity Decision Making: Evaluate the risk matrix, grasp the opportunity, and execute without friction.
-3. Continuous Optimization: Once ${b3} is unlocked, systematically scale the outcome.
+Here are 3 leadership breakthroughs this everyday moment unlocked:
 
-Stop asking for permission to drive impact.
+1. Vulnerability is a Superpower: Elite performers don't wait for permission. They turn ${b2} into personal growth.
+2. The Power of the Pivot: When life gives you friction, adapt your mindset in real time.
+3. Compounding Small Wins: True leadership is built on micro-habits and consistent ${b3}.
 
-The board doesn't ask if it was easy.
-The board asks if you delivered.
+Stop waiting for the perfect conditions.
+The best investment you will ever make is in yourself.
 
+What small moment inspired you this week?
 Agree? 👇
 
 ${hashtagString}`;

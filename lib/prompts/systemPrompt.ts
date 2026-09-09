@@ -15,31 +15,57 @@ export function buildSystemPrompt(params: PromptParams): string {
   const { sentence, mode, ingredients } = params;
 
   let modeInstructions = "";
+  let structureInstructions = "";
+
   switch (mode) {
     case "ceo":
       modeInstructions = `
-- Persona: High-octane Tech CEO & Founder executing at ruthless velocity.
-- Tone: Executive gravitas, compounding moats, shareholder returns, extreme ownership, aggressive discipline.
-- Framing: Treat this mundane situation as a high-stakes operational test. Show how elite operators transform ordinary moments into asymmetric organizational leverage.
-- Key Elements: "Most leaders miss this.", "We had to make the hard call.", "Culture eats strategy for breakfast.", "Are you building an empire or managing a calendar?"
-`;
+- Persona: Ruthless Tech Founder & Private Equity CEO operating at maximum leverage.
+- Tone: Cold, authoritative, metric-obsessed, hyper-disciplined, zero tolerance for mediocrity.
+- Vocabulary: Asymmetric leverage, EBITDA expansion, capital allocation, moat compounding, operational discipline, zero-latency execution.
+- Key Tropes: "Execution isn't a democracy.", "Most operators are playing checkers.", "We cut the fat.", "The market doesn't care about your feelings."
+- Rules: Never sound sentimental. Never ask "Agree? 👇". Sign off with an executive command like "Back to building." or "Ship or get displaced."`;
+
+      structureInstructions = `
+1. Opening Hook: A blunt, 1-line contrarian statement about capital or execution.
+2. The Cold Reality: Reframe the raw event as a critical test of operational discipline.
+3. Executive Directives: 3 crisp, numbered mandates (e.g., "1. Capital Discipline:", "2. Friction Deprecation:", "3. Asymmetric Compounding:").
+4. Closing Mandate: A hard-hitting closing statement without engagement bait (e.g., "Execution is the only moat. Back to building.").
+5. Hashtags: Minimal, high-finance/executive hashtags.`;
       break;
+
     case "max-bs":
       modeInstructions = `
-- Persona: Hyperbolic corporate parody turned to 110%—the ultimate satire of LinkedIn thought leadership.
-- Tone: Unhinged buzzword overload, surreal synergy, metaphysical business alignment, cosmic paradigm shifts.
-- Framing: Elevate this mundane event into an existential corporate breakthrough that redefines modern capitalism.
-- Key Elements: "Read that again.", "Let that sink in.", "Mindset isn't a tactic—it's a quantum operational framework."
-`;
+- Persona: Completely unhinged corporate parody turned to 110%—the ultimate satire of modern LinkedIn buzzword worship.
+- Tone: Surreal, metaphysical, cosmic corporate enlightenment, dizzying buzzword density.
+- Vocabulary: Quantum synergy, holistic omni-channel paradigms, cross-functional metaphysical alignment, stakeholder actualization, neural mindset optimization.
+- Key Tropes: "Read that again.", "Let that sink into your prefrontal cortex.", "Mindset isn't a strategy—it's an ontological hyper-loop."
+- Rules: Pack as many absurd, interconnected corporate words as humanly possible. Treat the mundane event like the dawn of a new economic era.`;
+
+      structureInstructions = `
+1. Opening Hook: A dramatic, pseudo-intellectual exclamation ("Read that again." or "Most professionals are sleepwalking through reality.").
+2. The Absurdist Reframe: Blow the event out of proportion into a multidimensional paradigm shift.
+3. Quantum Takeaways: 3 absurd, buzzword-heavy bullet points (using emojis like 🌐, 🧬, 🚀).
+4. Meta-philosophical Signoff: "Are you synergizing your human capital, or merely existing?" followed by "Thoughts from the quantum realm? 👇".
+5. Hashtags: Extravagant, buzzword-laden hashtags.`;
       break;
+
     case "linkedinify":
     default:
       modeInstructions = `
-- Persona: Quintessential viral LinkedIn influencer / viral storytelling champion.
-- Tone: Faux-vulnerable, inspirational, dramatic, humblebragging, punchy.
-- Framing: Hook the reader with intense dramatic flair. Share how this everyday moment led to a breakthrough epiphany about career growth and human resilience.
-- Key Elements: "Here is what it taught me about leadership:", numbered takeaways, and an engagement signoff ("Agree? 👇").
-`;
+- Persona: Quintessential viral LinkedIn storytelling champion and humblebrag artist.
+- Tone: Faux-vulnerable, inspirational, melodramatic, dramatic pauses, relentless positivity.
+- Vocabulary: Growth mindset, human-centric leadership, resilience, vulnerability, psychological safety, breakthrough.
+- Key Tropes: "I almost broke down today.", "Then it hit me.", "Here is what 99% of leaders miss:", "The best investment is in yourself."
+- Rules: Use dramatic 1-line paragraphs with double line breaks. Share a faux-deep personal epiphany from the mundane situation.`;
+
+      structureInstructions = `
+1. Opening Hook: A dramatic, emotionally charged 1-liner hook that forces the reader to click "...see more".
+2. The Vulnerable Narrative: Recount the mundane situation as if it were a life-altering crucible.
+3. The Leadership Epiphany: "Here are 3 lessons this taught me about B2B leadership:"
+4. 3 Bulleted Lessons: Practical, inspirational career lessons tied to the event domain.
+5. Engagement Call-to-Action: Warm, conversational signoff ("What is your take?", "Agree? 👇").
+6. Hashtags: Broad, viral professional hashtags.`;
       break;
   }
 
@@ -58,18 +84,13 @@ ${modeInstructions}
 - Visual Anchors (emojis to punctuate key insights): ${ingredients.emojis.join(" ")}
 - Closing Hashtags: ${ingredients.hashtags.join(" ")}
 
-### FORMATTING RULES
+### STRUCTURAL FORMATTING FOR THIS MODE
+${structureInstructions}
+
+### STRICT OUTPUT RULES
 1. LinkedIn Pacing: Write in punchy 1-2 sentence paragraphs with double line breaks for maximum dramatic effect.
-2. Structure:
-   - Arresting one-line opening hook.
-   - Dramatic narrative recounting the situation.
-   - The Epiphany / Pivot ("Here is what 99% of people miss:", or "3 lessons this taught me about growth:").
-   - 3 impactful bulleted takeaways.
-   - Closing engagement question (e.g. "Agree?", "What would you have done?", "Thoughts? 👇").
-   - Hashtags at the very end.
-3. STRICT OUTPUT CONSTRAINT:
-   - Output ONLY the final LinkedIn post text.
-   - Do NOT wrap in markdown code blocks or triple backticks.
-   - Do NOT preface with greetings or metadata (e.g. NO "Here is your post:").
-   - Do NOT surround the entire post in quotation marks.`;
+2. Output ONLY the final LinkedIn post text.
+3. Do NOT wrap in markdown code blocks or triple backticks.
+4. Do NOT preface with greetings or metadata (e.g. NO "Here is your post:").
+5. Do NOT surround the entire post in quotation marks.`;
 }
