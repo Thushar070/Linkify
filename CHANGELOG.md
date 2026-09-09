@@ -57,3 +57,26 @@ All notable changes to the Linkedinify™ project will be documented in this fil
 - Added typewriter streaming text reveal effect to `LinkedInPostCard`.
 - Verified category detection and pipeline behavior with internal test cases.
 
+## Phase 3 — LLM Integration & UI Enhancements
+
+### Part A: Gemini API Integration with Automatic Key Failover
+- Built `lib/llmClient.ts` with built-in automatic failover logic across configured API keys (`GEMINI_API_KEY_1`, `GEMINI_API_KEY_2`, with extensible array architecture for adding future keys in one line).
+- Handled rate-limit (429), quota errors, and credentials transparently with immediate fallback to backup keys.
+- Implemented server-side logging for failover debugging and clean friendly error state handling for the UI.
+- Built parameterized agent system prompt in `lib/prompts/systemPrompt.ts` combining input sentence, selected mode (LinkedInify, CEO Mode, Maximum Bullshit), and deterministic ingredients (category, buzzwords, emojis, hashtags), returning plain post text only.
+- Built `app/api/generate/route.ts` POST endpoint with comprehensive input validation (rejecting empty or >500 character inputs), pipeline ingredient generation, and LLM failover execution.
+
+### Part B: Connected Frontend to Real API
+- Connected `GenerateButton` to `POST /api/generate` with live user input and selected persona mode.
+- Replaced mock post text in `LinkedInPostCard` with real API responses revealed via smooth typewriter streaming effect.
+- Wired `CopyButton` to copy real generated post text with visual confirmation feedback.
+- Added a dedicated `Regenerate` button to `LinkedInPostCard` and action bar to re-run generation with the same input.
+- Bound existing loading animations to real request lifecycles with user-friendly error banners and retry options.
+
+### Part C: Outstanding UI Fixes
+- Removed the `BullshitLevelSelector` component, state, and references across `app/page.tsx` and the pipeline; bullshit intensity is now governed solely by the 3 modes.
+- Rebuilt `ModeSelector` into a Claude-style compact pill dropdown button (`"LinkedInify ▾"`) that opens a floating menu with one-line descriptions and checkmarks, animated smoothly with outside-click dismiss.
+- Enlarged the input textarea in `InputCard` to serve as the dominant visual centerpiece across all devices (mobile, tablet, desktop) with auto-grow preserved.
+- Established a confident, larger global typography scale across headings, body copy, and buttons.
+- Updated app branding to render strictly as `Linkedinify™` with superscript trademark symbol in header and footer.
+- Added an original animated 3D professional networking mark using Three.js (`AmbientNetwork3D.tsx`) rotating slowly in negative space in the header background, strictly styled with dark gray, white, and warm amber.
