@@ -1,26 +1,34 @@
 @import "tailwindcss";
+@config "../tailwind.config.ts";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  --color-background: #F4F2EE;
+  --color-surface: #FFFFFF;
+  --color-surface-subtle: #F9F8F6;
+  --color-surface-hover: #F3F2EF;
+  --color-border: #E0DFDC;
+  --color-border-subtle: #EBEAE7;
+  --color-text: #191919;
+  --color-text-muted: #666666;
+  --color-text-subtle: #8C8C8C;
+  --color-accent: #C27803;
+  --color-accent-hover: #A16207;
+  --color-accent-subtle: #FEF3C7;
+  --color-accent-foreground: #FFFFFF;
+  --color-accent-warn: #DC2626;
+  --color-accent-warn-hover: #B91C1C;
+  --color-accent-warn-subtle: #FEE2E2;
+  --color-accent-success: #0A6E4E;
+  --color-accent-success-hover: #08573D;
+  --color-accent-success-subtle: #DEF7EC;
+  --font-sans: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --radius-linkedin: 8px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
 }
