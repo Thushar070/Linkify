@@ -102,29 +102,58 @@ export default function AmbientNetwork3D() {
     pointLight2.position.set(-3, -2, 2);
     scene.add(pointLight2);
 
-    // Animation Loop
+    // Animation Loop with Reduced Motion & Visibility optimizations
     let animationFrameId: number;
-    let clock = new THREE.Clock();
+    const clock = new THREE.Clock();
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const animate = () => {
-      const elapsedTime = clock.getElapsedTime();
-
-      // Continuous gentle rotation evocative of a slow-turning professional network
-      group.rotation.y = elapsedTime * 0.15;
-      group.rotation.x = Math.sin(elapsedTime * 0.1) * 0.2;
-      group.rotation.z = Math.cos(elapsedTime * 0.12) * 0.15;
-
-      // Subtle counter-rotation on inner elements
-      centerMesh.rotation.y = -elapsedTime * 0.3;
-      centerMesh.rotation.x = elapsedTime * 0.2;
-
-      torusMesh2.rotation.z = elapsedTime * 0.1;
-
+    // If reduced motion is preferred, render a single aesthetic static frame without animation loop
+    if (prefersReducedMotion) {
+      group.rotation.y = 0.5;
+      group.rotation.x = 0.2;
       renderer.render(scene, camera);
-      animationFrameId = requestAnimationFrame(animate);
-    };
+    } else {
+      let isVisible = true;
 
-    animate();
+      const animate = () => {
+        if (!isVisible) return;
+
+        const elapsedTime = clock.getElapsedTime();
+
+        // Continuous gentle rotation evocative of a slow-turning professional network
+        group.rotation.y = elapsedTime * 0.15;
+        group.rotation.x = Math.sin(elapsedTime * 0.1) * 0.2;
+        group.rotation.z = Math.cos(elapsedTime * 0.12) * 0.15;
+
+        // Subtle counter-rotation on inner elements
+        centerMesh.rotation.y = -elapsedTime * 0.3;
+        centerMesh.rotation.x = elapsedTime * 0.2;
+
+        torusMesh2.rotation.z = elapsedTime * 0.1;
+
+        renderer.render(scene, camera);
+        animationFrameId = requestAnimationFrame(animate);
+      };
+
+      const handleVisibilityChange = () => {
+        if (document.hidden) {
+          isVisible = false;
+          cancelAnimationFrame(animationFrameId);
+        } else {
+          isVisible = true;
+          animationFrameId = requestAnimationFrame(animate);
+        }
+      };
+
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+      animate();
+
+      var cleanupVisibility = () => {
+        document.removeEventListener("visibilitychange", handleVisibilityChange);
+      };
+    }
 
     // Resize Observer
     const handleResize = () => {
@@ -134,6 +163,9 @@ export default function AmbientNetwork3D() {
       camera.aspect = newWidth / newHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(newWidth, newHeight);
+      if (prefersReducedMotion) {
+        renderer.render(scene, camera);
+      }
     };
 
     window.addEventListener("resize", handleResize);
@@ -141,6 +173,7 @@ export default function AmbientNetwork3D() {
     // Cleanup
     return () => {
       window.removeEventListener("resize", handleResize);
+      if (cleanupVisibility) cleanupVisibility();
       cancelAnimationFrame(animationFrameId);
       renderer.dispose();
       torusGeom1.dispose();
