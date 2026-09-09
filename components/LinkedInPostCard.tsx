@@ -39,15 +39,20 @@ export default function LinkedInPostCard({
 
   useEffect(() => {
     if (!postText) {
-      setDisplayedText("");
-      setIsTyping(false);
-      return;
+      const resetTimer = setTimeout(() => {
+        setDisplayedText("");
+        setIsTyping(false);
+      }, 0);
+      return () => clearTimeout(resetTimer);
     }
 
     const words = postText.split(" ");
     let currentWordIndex = 0;
-    setIsTyping(true);
-    setDisplayedText(words[0] || "");
+
+    const startTimer = setTimeout(() => {
+      setIsTyping(true);
+      setDisplayedText(words[0] || "");
+    }, 0);
 
     const interval = setInterval(() => {
       currentWordIndex += 1;
@@ -60,7 +65,10 @@ export default function LinkedInPostCard({
       }
     }, 20);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(startTimer);
+      clearInterval(interval);
+    };
   }, [postText]);
 
   return (

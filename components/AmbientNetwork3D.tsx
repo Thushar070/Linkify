@@ -104,6 +104,7 @@ export default function AmbientNetwork3D() {
 
     // Animation Loop with Reduced Motion & Visibility optimizations
     let animationFrameId: number;
+    let cleanupVisibility: (() => void) | null = null;
     const clock = new THREE.Clock();
     const prefersReducedMotion =
       typeof window !== "undefined" &&
@@ -150,7 +151,7 @@ export default function AmbientNetwork3D() {
       document.addEventListener("visibilitychange", handleVisibilityChange);
       animate();
 
-      var cleanupVisibility = () => {
+      cleanupVisibility = () => {
         document.removeEventListener("visibilitychange", handleVisibilityChange);
       };
     }
