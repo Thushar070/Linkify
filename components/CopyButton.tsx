@@ -16,7 +16,6 @@ export default function CopyButton({ text, className = "" }: CopyButtonProps) {
       if (navigator?.clipboard?.writeText) {
         await navigator.clipboard.writeText(text);
       } else {
-        // Fallback for older browsers / environments
         const textArea = document.createElement("textarea");
         textArea.value = text;
         textArea.style.position = "fixed";
@@ -39,23 +38,26 @@ export default function CopyButton({ text, className = "" }: CopyButtonProps) {
       type="button"
       onClick={handleCopy}
       aria-label={copied ? "Copied to clipboard" : "Copy post text"}
-      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border transition-all duration-150 cursor-pointer ${
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border transition-all duration-200 cursor-pointer active:scale-95 select-none ${
         copied
           ? "border-accent-success/40 bg-accent-success-subtle text-accent-success shadow-2xs"
-          : "border-border bg-surface text-text hover:border-accent hover:bg-surface-hover shadow-2xs"
+          : "border-border bg-surface text-text hover:border-text-muted hover:bg-surface-hover shadow-2xs"
       } ${className}`}
     >
-      {copied ? (
-        <>
+      <span
+        className={`inline-flex items-center transition-transform duration-200 ease-out ${
+          copied ? "scale-125" : "scale-100"
+        }`}
+      >
+        {copied ? (
           <Check className="w-3.5 h-3.5 text-accent-success" />
-          <span>Copied!</span>
-        </>
-      ) : (
-        <>
+        ) : (
           <Copy className="w-3.5 h-3.5 text-text-muted" />
-          <span>Copy Post</span>
-        </>
-      )}
+        )}
+      </span>
+      <span className="transition-opacity duration-150">
+        {copied ? "Copied!" : "Copy Post"}
+      </span>
     </button>
   );
 }
