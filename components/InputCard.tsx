@@ -11,21 +11,21 @@ interface InputCardProps {
 export default function InputCard({
   value,
   onChange,
-  placeholder = "What happened today? (e.g. I ate an apple, I fixed a typo, I drank coffee...)",
+  placeholder = "What happened today?",
   disabled = false,
 }: InputCardProps) {
   return (
-    <div className="bg-surface rounded-linkedin border border-border p-4 sm:p-5 shadow-xs transition-colors">
+    <div className="bg-surface rounded-linkedin border border-border p-4 sm:p-5 shadow-xs">
       <div className="flex items-center gap-2 mb-3">
-        <div className="flex items-center justify-center w-7 h-7 rounded-full bg-accent-subtle text-accent">
-          <PenLine className="w-4 h-4 text-accent" />
+        <div className="flex items-center justify-center w-7 h-7 rounded-full bg-surface-subtle border border-border text-text">
+          <PenLine className="w-3.5 h-3.5" />
         </div>
         <div>
           <h2 className="text-sm font-semibold text-text tracking-tight">
-            The Mundane Event
+            Event Description
           </h2>
           <p className="text-xs text-text-muted">
-            Describe what you actually did in plain, honest words
+            Enter what occurred in plain language
           </p>
         </div>
       </div>
@@ -38,10 +38,10 @@ export default function InputCard({
           disabled={disabled}
           rows={3}
           maxLength={300}
-          className="w-full resize-none rounded-md border border-border bg-surface-subtle p-3 text-sm text-text placeholder:text-text-subtle focus:bg-surface focus:border-accent focus:outline-hidden focus:ring-1 focus:ring-accent transition-all duration-150"
+          className="w-full resize-none rounded-md border border-border bg-surface-subtle p-3 text-sm text-text placeholder:text-text-subtle focus:bg-surface focus:border-border focus:outline-hidden focus:ring-1 focus:ring-border transition-all duration-150"
         />
         <div className="flex justify-between items-center mt-1.5 px-0.5 text-xs text-text-subtle">
-          <span>Be painfully honest. No buzzwords yet.</span>
+          <span>Keep it simple and factual.</span>
           <span>{value.length}/300</span>
         </div>
       </div>

@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import InputCard from "@/components/InputCard";
-import ExampleChips from "@/components/ExampleChips";
 import BullshitLevelSelector, {
   BullshitLevel,
 } from "@/components/BullshitLevelSelector";
@@ -21,14 +20,8 @@ export default function Home() {
   const [hasGenerated, setHasGenerated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSelectExample = (example: string) => {
-    setSentence(example);
-  };
-
   const handleGenerate = () => {
-    if (!sentence.trim()) {
-      setSentence("I ate an apple.");
-    }
+    if (!sentence.trim()) return;
     setIsLoading(true);
     // Mock generation delay for Phase 1
     setTimeout(() => {
@@ -100,12 +93,6 @@ export default function Home() {
           <InputCard
             value={sentence}
             onChange={setSentence}
-            disabled={isLoading}
-          />
-
-          <ExampleChips
-            onSelect={handleSelectExample}
-            selected={sentence}
             disabled={isLoading}
           />
 

@@ -10,26 +10,24 @@ import {
 } from "lucide-react";
 import CopyButton from "./CopyButton";
 
-export const MOCK_POST = `Most people saw an apple. 🍎
+export const MOCK_POST = `Most people see an ordinary task.
 
-I saw a critical inflection point in biological asset allocation and sustainable caloric resource ingestion.
+I saw a critical inflection point in strategic operational execution.
 
-Yesterday at 14:00 UTC, I executed a single-origin pectin intake initiative with zero cross-functional friction. 
+Yesterday, I executed a foundational initiative with zero cross-functional friction.
 
-Here is what 99% of leaders fail to realize about nutritional synergy:
+Here is what 99% of professionals fail to realize:
 
-1. Autonomous Energy Ingestion: Waiting for scheduled lunch breaks is a legacy framework. Elite performers optimize metabolic throughput in real-time.
-2. High-Velocity Decision Making: I didn't form an advisory committee to select the fruit. I evaluated the risk matrix, grasped the branch-level opportunity, and executed.
-3. Core Deprecation: Once the value was extracted, the remaining biodegradable structure was systematically offboarded to sustainable compost receptacles.
+1. Autonomous Execution: Waiting for instructions is a legacy framework. Elite performers optimize throughput in real-time.
+2. High-Velocity Decision Making: Evaluate the risk matrix, grasp the opportunity, and execute without hesitation.
+3. Continuous Optimization: Once value is extracted, systematically refine the operating model.
 
-Stop asking for permission to nourish your execution capability.
+Stop asking for permission to drive impact.
 
-The board doesn't ask if you're hungry.
-The board asks if you scaled.
+The board doesn't ask if it was easy.
+The board asks if you delivered.
 
-Agree? 👇
-
-#ExecutiveMindset #BioOptimization #StrategicIngestion #LeadershipExcellence #ScalingHunger #ExtremeOwnership`;
+#Leadership #Strategy #GrowthMindset #Execution #OperationalExcellence`;
 
 interface LinkedInPostCardProps {
   postText?: string;
