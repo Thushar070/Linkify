@@ -6,6 +6,7 @@ import ModeSelector, { LinkedinMode } from "@/components/ModeSelector";
 import GenerateButton from "@/components/GenerateButton";
 import LinkedInPostCard from "@/components/LinkedInPostCard";
 import LoadingState from "@/components/LoadingState";
+import AmbientNetwork3D from "@/components/AmbientNetwork3D";
 import { AlertCircle, RotateCcw } from "lucide-react";
 
 export default function Home() {
@@ -89,7 +90,9 @@ export default function Home() {
       </header>
 
       {/* Main Content Area */}
-      <main className="max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8 flex-1">
+      <main className="relative max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8 flex-1">
+        <AmbientNetwork3D />
+
         {/* Hero Title */}
         <div className="space-y-2 max-w-2xl">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-[1.15]">
