@@ -61,3 +61,10 @@ body {
   border-color: #383838;
 }
 
+/* Accessibility: guarantee amber focus outlines and eliminate default browser blue focus rings */
+:focus-visible {
+  outline: 2px solid #E5A93C;
+  outline-offset: 2px;
+}
+
+

@@ -76,7 +76,7 @@ export default function LinkedInPostCard({
               type="button"
               onClick={onRegenerate}
               disabled={isRegenerating}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border bg-surface text-text-muted hover:text-white hover:bg-surface-hover text-xs font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border bg-surface text-text-muted hover:text-white hover:bg-surface-hover text-xs font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-500/80 focus-visible:ring-offset-1 focus-visible:ring-offset-black"
               title="Regenerate post"
             >
               <RotateCw
