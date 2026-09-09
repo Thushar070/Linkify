@@ -113,3 +113,15 @@ All notable changes to the Linkedinify™ project will be documented in this fil
 ### Section E: Responsive CSS Audit
 - Verified responsive Tailwind classes (`sm:`, `md:`, `lg:`) across containers, textarea font sizes (`text-base sm:text-xl md:text-2xl`), action bar stacking on mobile, and right-anchored mode dropdown positioning.
 - Executed clean `npm run build`, `npx tsc --noEmit`, and `npm run lint` with 0 errors and 0 warnings.
+
+## Phase 4.5 — Production Readiness & Hardening
+
+- Authenticated live Google AI Studio keys against Gemini API (`gemini-3.5-flash-lite`) with multi-key failover verified.
+- Added in-memory sliding window rate limiter on `/api/generate` (10 requests/minute per IP) with on-theme 429 response.
+- Injected strict prompt-injection guardrails into `buildSystemPrompt` to prevent instruction hijacking.
+- Verified `.env.local` is gitignored and verified 0 secret leaks in git history.
+- Added client-side `ErrorBoundary` component with on-theme recovery UI.
+- Implemented 20-second timeout handling with abort signals, on-theme error messaging, and inline retry controls.
+- Verified all post outputs render as plain React children without any `dangerouslySetInnerHTML`.
+- Confirmed zero errors across `npm run build` and `npx tsc --noEmit`.
+
