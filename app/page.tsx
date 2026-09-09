@@ -10,6 +10,7 @@ import GenerateButton from "@/components/GenerateButton";
 import LinkedInPostCard from "@/components/LinkedInPostCard";
 import LoadingState from "@/components/LoadingState";
 import { RotateCcw } from "lucide-react";
+import { runAgentPipeline } from "@/lib/agent/pipeline";
 
 export default function Home() {
   const [sentence, setSentence] = useState("");
@@ -17,19 +18,26 @@ export default function Home() {
   const [mode, setMode] = useState<LinkedinMode>("linkedinify");
   const [hasGenerated, setHasGenerated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [generatedPostText, setGeneratedPostText] = useState("");
 
   const handleGenerate = () => {
     if (!sentence.trim()) return;
     setIsLoading(true);
-    // Mock generation delay for Phase 1
     setTimeout(() => {
+      const result = runAgentPipeline({
+        sentence,
+        bullshitLevel,
+        mode,
+      });
+      setGeneratedPostText(result.postText);
       setIsLoading(false);
       setHasGenerated(true);
-    }, 800);
+    }, 600);
   };
 
   const handleReset = () => {
     setSentence("");
+    setGeneratedPostText("");
     setHasGenerated(false);
     setIsLoading(false);
   };
@@ -106,7 +114,7 @@ export default function Home() {
             aria-label="Generated Results"
           >
             {/* LinkedIn Post Card */}
-            <LinkedInPostCard />
+            <LinkedInPostCard postText={generatedPostText} />
           </section>
         )}
       </main>
