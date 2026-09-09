@@ -6,8 +6,44 @@ import { generateWithFailover } from "@/lib/llmClient";
 
 const VALID_MODES: LinkedinMode[] = ["linkedinify", "ceo", "max-bs"];
 
+// In-memory rate limiter: max 10 requests per 60 seconds per IP
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const MAX_REQUESTS_PER_WINDOW = 10;
+const ipRequestTimestamps = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const timestamps = ipRequestTimestamps.get(ip) || [];
+  
+  // Filter out timestamps older than the sliding window
+  const validTimestamps = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+  
+  if (validTimestamps.length >= MAX_REQUESTS_PER_WINDOW) {
+    ipRequestTimestamps.set(ip, validTimestamps);
+    return true;
+  }
+  
+  validTimestamps.push(now);
+  ipRequestTimestamps.set(ip, validTimestamps);
+  return false;
+}
+
 export async function POST(req: NextRequest) {
   try {
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("x-real-ip") ||
+      "127.0.0.1";
+
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        {
+          error:
+            "You're generating a lot of thought leadership right now — give it a minute to synergize before the next breakthrough.",
+        },
+        { status: 429 }
+      );
+    }
     let body: unknown;
     try {
       body = await req.json();
