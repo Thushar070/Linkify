@@ -35,11 +35,17 @@ export default function HistoryPanel({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  // Reset clear confirmation when panel closes
+  // Reset clear confirmation and lock body scroll when panel open/closes
   useEffect(() => {
-    if (!isOpen) {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
       setConfirmClear(false);
     }
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isOpen]);
 
   const getModeLabel = (mode: string) => {
