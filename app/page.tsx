@@ -6,8 +6,7 @@ import ModeSelector, { LinkedinMode } from "@/components/ModeSelector";
 import GenerateButton from "@/components/GenerateButton";
 import LinkedInPostCard from "@/components/LinkedInPostCard";
 import LoadingState from "@/components/LoadingState";
-import { RotateCcw } from "lucide-react";
-import { runAgentPipeline } from "@/lib/agent/pipeline";
+import { AlertCircle, RotateCcw } from "lucide-react";
 
 export default function Home() {
   const [sentence, setSentence] = useState("");
@@ -15,25 +14,54 @@ export default function Home() {
   const [hasGenerated, setHasGenerated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [generatedPostText, setGeneratedPostText] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
-  const handleGenerate = () => {
-    if (!sentence.trim()) return;
+  const handleGenerate = async () => {
+    if (!sentence.trim() || isLoading) return;
     setIsLoading(true);
-    setTimeout(() => {
-      const result = runAgentPipeline({
-        sentence,
-        mode,
+    setError(null);
+
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sentence: sentence.trim(),
+          mode,
+        }),
       });
-      setGeneratedPostText(result.postText);
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(
+          data.error ||
+            "Generation temporarily unavailable, please try again shortly."
+        );
+      } else if (data.postText) {
+        setGeneratedPostText(data.postText);
+        setHasGenerated(true);
+        setError(null);
+      } else {
+        setError(
+          "Generation temporarily unavailable, please try again shortly."
+        );
+      }
+    } catch (err: unknown) {
+      console.error("[frontend] Generation request failed:", err);
+      setError("Generation temporarily unavailable, please try again shortly.");
+    } finally {
       setIsLoading(false);
-      setHasGenerated(true);
-    }, 600);
+    }
   };
 
   const handleReset = () => {
     setSentence("");
     setGeneratedPostText("");
     setHasGenerated(false);
+    setError(null);
     setIsLoading(false);
   };
 
@@ -89,6 +117,27 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Error notification banner */}
+        {error && (
+          <section
+            className="p-4 rounded-md border border-neutral-800 bg-neutral-950 text-neutral-300 flex items-start sm:items-center justify-between gap-3 text-sm animate-slide-up-fade"
+            role="alert"
+          >
+            <div className="flex items-center gap-2.5">
+              <AlertCircle className="w-4 h-4 text-amber-500 shrink-0" />
+              <span>{error}</span>
+            </div>
+            <button
+              type="button"
+              onClick={handleGenerate}
+              disabled={isLoading}
+              className="text-xs font-semibold text-accent hover:underline shrink-0 cursor-pointer disabled:opacity-50"
+            >
+              Try again
+            </button>
+          </section>
+        )}
+
         {/* Loading State */}
         {isLoading && (
           <section className="pt-4 border-t border-border/80">
@@ -103,7 +152,11 @@ export default function Home() {
             aria-label="Generated Results"
           >
             {/* LinkedIn Post Card */}
-            <LinkedInPostCard postText={generatedPostText} />
+            <LinkedInPostCard
+              postText={generatedPostText}
+              onRegenerate={handleGenerate}
+              isRegenerating={isLoading}
+            />
           </section>
         )}
       </main>

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import CopyButton from "./CopyButton";
+import { RotateCw } from "lucide-react";
 
 export const MOCK_POST = `Most people see an ordinary task.
 
@@ -24,10 +25,14 @@ The board asks if you delivered.
 
 interface LinkedInPostCardProps {
   postText?: string;
+  onRegenerate?: () => void;
+  isRegenerating?: boolean;
 }
 
 export default function LinkedInPostCard({
   postText = MOCK_POST,
+  onRegenerate,
+  isRegenerating = false,
 }: LinkedInPostCardProps) {
   const [displayedText, setDisplayedText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -53,28 +58,44 @@ export default function LinkedInPostCard({
       } else {
         setDisplayedText(words.slice(0, currentWordIndex + 1).join(" "));
       }
-    }, 24);
+    }, 20);
 
     return () => clearInterval(interval);
   }, [postText]);
 
   return (
     <div className="bg-surface rounded-linkedin border border-border shadow-xs overflow-hidden interactive-card">
-      {/* Header with title and copy button */}
+      {/* Header with title, regenerate, and copy button */}
       <div className="px-4 sm:px-5 py-3 border-b border-border flex items-center justify-between">
-        <span className="text-xs font-medium text-text-muted">
+        <span className="text-xs font-semibold uppercase tracking-wider text-text-muted">
           Generated Post
         </span>
-        <CopyButton text={postText} />
+        <div className="flex items-center gap-2">
+          {onRegenerate && (
+            <button
+              type="button"
+              onClick={onRegenerate}
+              disabled={isRegenerating}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border bg-surface text-text-muted hover:text-white hover:bg-surface-hover text-xs font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Regenerate post"
+            >
+              <RotateCw
+                className={`w-3.5 h-3.5 ${isRegenerating ? "animate-spin text-accent" : ""}`}
+              />
+              <span>Regenerate</span>
+            </button>
+          )}
+          <CopyButton text={postText} />
+        </div>
       </div>
 
       {/* Post body with typewriter streaming effect */}
-      <div className="p-4 sm:p-5">
-        <div className="text-sm text-text whitespace-pre-line leading-relaxed font-normal">
+      <div className="p-5 sm:p-6">
+        <div className="text-sm sm:text-base text-text whitespace-pre-line leading-relaxed font-normal">
           {displayedText}
           {isTyping && (
             <span
-              className="inline-block w-1.5 h-3.5 ml-1 bg-accent animate-pulse align-middle rounded-xs"
+              className="inline-block w-1.5 h-4 ml-1 bg-accent animate-pulse align-middle rounded-xs"
               aria-hidden="true"
             />
           )}
@@ -83,3 +104,4 @@ export default function LinkedInPostCard({
     </div>
   );
 }
+
