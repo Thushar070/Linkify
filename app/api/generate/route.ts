@@ -132,9 +132,15 @@ export async function POST(req: NextRequest) {
 
     console.error("[api/generate] Generation error:", message);
 
+    const isTimeout = message.includes("timed out") || message.includes("unusually long");
+
     return NextResponse.json(
-      { error: "Generation temporarily unavailable, please try again shortly." },
-      { status: 503 }
+      {
+        error: isTimeout
+          ? "Generation timed out — taking unusually long to synergize. Please try again."
+          : "Generation temporarily unavailable, please try again shortly.",
+      },
+      { status: isTimeout ? 504 : 503 }
     );
   }
 }

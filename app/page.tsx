@@ -24,6 +24,11 @@ function HomeContent() {
     setIsLoading(true);
     setError(null);
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+      controller.abort();
+    }, 20000);
+
     try {
       const res = await fetch("/api/generate", {
         method: "POST",
@@ -34,8 +39,10 @@ function HomeContent() {
           sentence: sentence.trim(),
           mode,
         }),
+        signal: controller.signal,
       });
 
+      clearTimeout(timeoutId);
       const data = await res.json();
 
       if (!res.ok) {
@@ -53,8 +60,15 @@ function HomeContent() {
         );
       }
     } catch (err: unknown) {
-      console.error("[frontend] Generation request failed:", err);
-      setError("Generation temporarily unavailable, please try again shortly.");
+      clearTimeout(timeoutId);
+      if (err instanceof Error && err.name === "AbortError") {
+        setError(
+          "Generation is taking unusually long — the synergy pipeline timed out. Give it another try."
+        );
+      } else {
+        console.error("[frontend] Generation request failed:", err);
+        setError("Generation temporarily unavailable, please try again shortly.");
+      }
     } finally {
       setIsLoading(false);
     }

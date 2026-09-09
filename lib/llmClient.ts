@@ -20,14 +20,20 @@ export function getApiKeys(): string[] {
 async function callGeminiApi(apiKey: string, prompt: string): Promise<string> {
   const ai = new GoogleGenAI({ apiKey });
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    setTimeout(() => reject(new Error("Gemini API request timed out after 20s")), 20000);
+  });
+
+  const generatePromise = ai.models.generateContent({
+    model: "gemini-3.5-flash-lite",
     contents: prompt,
     config: {
       maxOutputTokens: 600,
       temperature: 0.85,
     },
   });
+
+  const response = await Promise.race([generatePromise, timeoutPromise]);
 
   const text = response.text;
   if (!text || text.trim().length === 0) {
@@ -84,8 +90,9 @@ export async function generateWithFailover(prompt: string): Promise<GeneratePost
     }
   }
 
-  console.error(
-    `[llmClient] All ${keys.length} Gemini API keys failed or were rate-limited. Last error: ${lastError?.message}`
-  );
+  if (lastError?.message?.includes("timed out")) {
+    throw new Error("Generation timed out. The synergy pipeline is taking unusually long — please try again.");
+  }
+
   throw new Error("Generation temporarily unavailable, please try again shortly.");
 }
