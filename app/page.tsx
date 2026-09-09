@@ -36,12 +36,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-text flex flex-col justify-between">
-      {/* Top Navbar */}
-      <header className="border-b border-border bg-background">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-          <span className="font-semibold text-base tracking-tight text-text">
+      {/* Top Header */}
+      <header className="border-b border-border/60">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-5 sm:py-6 flex items-center justify-between">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white select-none">
             Linkedinify
-          </span>
+          </h1>
         </div>
       </header>
 
