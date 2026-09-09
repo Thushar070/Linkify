@@ -48,8 +48,8 @@ export default function BullshitLevelSelector({
   onChange,
   disabled = false,
 }: BullshitLevelSelectorProps) {
-  const activeOption =
-    BULLSHIT_LEVELS.find((l) => l.id === value) || BULLSHIT_LEVELS[1];
+  const activeIndex = BULLSHIT_LEVELS.findIndex((l) => l.id === value);
+  const activeOption = BULLSHIT_LEVELS[activeIndex] || BULLSHIT_LEVELS[1];
 
   return (
     <div className="bg-surface rounded-linkedin border border-border p-4 sm:p-5 shadow-xs">
@@ -73,23 +73,39 @@ export default function BullshitLevelSelector({
         </span>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1 bg-surface-subtle rounded-md border border-border-subtle">
+      {/* Segmented control with animated sliding indicator */}
+      <div
+        role="radiogroup"
+        aria-label="Inflation level selector"
+        className="relative grid grid-cols-4 p-1 bg-surface-subtle rounded-md border border-border-subtle select-none"
+      >
+        {/* Animated sliding pill */}
+        <div
+          className="absolute top-1 bottom-1 left-1 rounded-sm bg-white shadow-xs transition-all duration-200 ease-out pointer-events-none"
+          style={{
+            width: "calc((100% - 8px) / 4)",
+            transform: `translateX(${activeIndex * 100}%)`,
+          }}
+        />
+
         {BULLSHIT_LEVELS.map((level) => {
           const isActive = value === level.id;
           return (
             <button
               key={level.id}
               type="button"
+              role="radio"
+              aria-checked={isActive}
               disabled={disabled}
               onClick={() => onChange(level.id)}
-              className={`flex flex-col items-center justify-center py-2 px-2 rounded-sm text-xs transition-all duration-150 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${
+              className={`relative z-10 flex flex-col items-center justify-center py-2 px-1 rounded-sm text-xs transition-colors duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${
                 isActive
-                  ? "bg-white text-black font-semibold shadow-xs"
-                  : "text-text-muted hover:text-white hover:bg-surface/50 border border-transparent"
+                  ? "text-black font-semibold"
+                  : "text-text-muted hover:text-white"
               }`}
             >
-              <span className="font-medium">{level.label}</span>
-              <span className="text-[10px] opacity-75 font-normal">
+              <span className="font-medium truncate">{level.label}</span>
+              <span className="text-[10px] opacity-75 font-normal truncate">
                 {level.sublabel}
               </span>
             </button>
