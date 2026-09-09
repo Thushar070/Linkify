@@ -6,7 +6,6 @@ export type LinkedinMode = "linkedinify" | "ceo" | "max-bs";
 export interface ModeOption {
   id: LinkedinMode;
   name: string;
-  tagline: string;
   icon: React.ComponentType<{ className?: string }>;
 }
 
@@ -14,19 +13,16 @@ export const MODE_OPTIONS: ModeOption[] = [
   {
     id: "linkedinify",
     name: "LinkedInify",
-    tagline: "Standard executive spin",
     icon: Sparkles,
   },
   {
     id: "ceo",
     name: "CEO Mode",
-    tagline: "Strategic resource allocation",
     icon: Briefcase,
   },
   {
     id: "max-bs",
     name: "Maximum Bullshit",
-    tagline: "Unhinged corporate delirium",
     icon: Flame,
   },
 ];
@@ -42,18 +38,55 @@ export default function ModeSelector({
   onChange,
   disabled = false,
 }: ModeSelectorProps) {
+  const activeIndex = MODE_OPTIONS.findIndex((m) => m.id === value);
+
+  const getIndicatorColor = () => {
+    switch (value) {
+      case "linkedinify":
+        return "bg-white";
+      case "ceo":
+        return "bg-accent";
+      case "max-bs":
+        return "bg-gradient-to-r from-red-600 via-orange-500 to-amber-500";
+      default:
+        return "bg-white";
+    }
+  };
+
+  const getActiveTextColor = () => {
+    switch (value) {
+      case "linkedinify":
+      case "ceo":
+        return "text-black font-semibold";
+      case "max-bs":
+        return "text-white font-semibold";
+      default:
+        return "text-black font-semibold";
+    }
+  };
+
   return (
     <div className="flex flex-col gap-1.5">
       <span className="text-xs font-medium text-text-muted">
-        Persona
+        Persona Mode
       </span>
 
-      {/* Model-switcher style segmented pill */}
+      {/* Segmented control container with sliding pill */}
       <div
         role="radiogroup"
         aria-label="Persona mode selector"
-        className="inline-flex p-1 rounded-lg bg-surface border border-border w-full sm:w-auto"
+        className="relative flex p-1 rounded-lg bg-surface border border-border w-full sm:w-[440px] select-none"
       >
+        {/* Animated sliding indicator pill */}
+        <div
+          className={`absolute top-1 bottom-1 left-1 rounded-md transition-all duration-200 ease-out pointer-events-none shadow-xs ${getIndicatorColor()}`}
+          style={{
+            width: "calc((100% - 8px) / 3)",
+            transform: `translateX(${activeIndex * 100}%)`,
+          }}
+        />
+
+        {/* Mode buttons */}
         {MODE_OPTIONS.map((mode) => {
           const isSelected = value === mode.id;
           const Icon = mode.icon;
@@ -66,14 +99,14 @@ export default function ModeSelector({
               aria-checked={isSelected}
               disabled={disabled}
               onClick={() => onChange(mode.id)}
-              className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-md text-xs transition-all duration-150 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${
+              className={`relative z-10 flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 text-xs transition-colors duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${
                 isSelected
-                  ? "bg-white text-black font-semibold shadow-xs"
-                  : "text-text-muted hover:text-white hover:bg-surface-hover"
+                  ? getActiveTextColor()
+                  : "text-text-muted hover:text-white"
               }`}
             >
-              <Icon className="w-3.5 h-3.5" />
-              <span>{mode.name}</span>
+              <Icon className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">{mode.name}</span>
             </button>
           );
         })}
