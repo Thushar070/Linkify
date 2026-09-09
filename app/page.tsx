@@ -68,12 +68,13 @@ export default function Home() {
           />
 
           {/* Action Bar */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1">
             <div className="flex items-center gap-2">
               <GenerateButton
                 onClick={handleGenerate}
                 loading={isLoading}
-                text={hasGenerated ? "Regenerate Post" : "Linkedinify This"}
+                disabled={!sentence.trim()}
+                text={hasGenerated ? "Regenerate" : "Linkedinify"}
               />
 
               {hasGenerated && (
@@ -81,16 +82,12 @@ export default function Home() {
                   type="button"
                   onClick={handleReset}
                   disabled={isLoading}
-                  className="px-4 py-3 rounded-full border border-border bg-surface text-text hover:bg-surface-hover hover:border-accent/40 text-xs font-medium inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  className="px-4 py-2.5 rounded-md border border-border bg-surface text-text hover:bg-surface-hover text-xs font-medium inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5 text-text-muted" />
                   <span>Reset</span>
                 </button>
               )}
-            </div>
-
-            <div className="text-right text-[11px] text-text-subtle hidden sm:block">
-              <span>Zero blue pixels • 100% corporate delirium</span>
             </div>
           </div>
         </section>

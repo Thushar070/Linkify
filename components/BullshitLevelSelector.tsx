@@ -21,19 +21,19 @@ export const BULLSHIT_LEVELS: BullshitLevelOption[] = [
     id: "corporate",
     label: "Corporate",
     sublabel: "Stage 2",
-    description: "Standard LinkedIn jargon: synergy, strategic alignment, paradigms.",
+    description: "Standard corporate jargon: synergy, strategic alignment, paradigms.",
   },
   {
     id: "influencer",
     label: "Influencer",
     sublabel: "Stage 3",
-    description: "One-sentence paragraphs, toxic positivity, unsolicited life lessons.",
+    description: "Short punchy lines, unsolicited life lessons, aggressive positivity.",
   },
   {
     id: "final-boss",
     label: "Final Boss",
     sublabel: "Stage 4",
-    description: "Peak corporate delirium. Quantum leadership, universe impact, pure ego.",
+    description: "Peak corporate delirium. Quantum leadership, pure ego.",
   },
 ];
 
@@ -48,18 +48,19 @@ export default function BullshitLevelSelector({
   onChange,
   disabled = false,
 }: BullshitLevelSelectorProps) {
-  const activeOption = BULLSHIT_LEVELS.find((l) => l.id === value) || BULLSHIT_LEVELS[1];
+  const activeOption =
+    BULLSHIT_LEVELS.find((l) => l.id === value) || BULLSHIT_LEVELS[1];
 
   return (
     <div className="bg-surface rounded-linkedin border border-border p-4 sm:p-5 shadow-xs">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <div className="flex items-center justify-center w-7 h-7 rounded-full bg-accent-subtle text-accent">
-            <Gauge className="w-4 h-4 text-accent" />
+          <div className="flex items-center justify-center w-7 h-7 rounded-full bg-surface-subtle border border-border text-text">
+            <Gauge className="w-3.5 h-3.5" />
           </div>
           <div>
             <h2 className="text-sm font-semibold text-text tracking-tight">
-              Bullshit Level
+              Inflation Level
             </h2>
             <p className="text-xs text-text-muted">
               Select how aggressively the narrative is inflated
@@ -67,7 +68,7 @@ export default function BullshitLevelSelector({
           </div>
         </div>
 
-        <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-accent-subtle text-accent border border-accent/20">
+        <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-surface-subtle border border-border text-text-muted">
           {activeOption.label} • {activeOption.sublabel}
         </span>
       </div>
@@ -81,14 +82,16 @@ export default function BullshitLevelSelector({
               type="button"
               disabled={disabled}
               onClick={() => onChange(level.id)}
-              className={`flex flex-col items-center justify-center py-2.5 px-2 rounded-sm text-xs transition-all duration-150 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${
+              className={`flex flex-col items-center justify-center py-2 px-2 rounded-sm text-xs transition-all duration-150 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${
                 isActive
-                  ? "bg-surface text-accent font-semibold shadow-xs border border-accent/30"
-                  : "text-text-muted hover:text-text hover:bg-surface/50 border border-transparent"
+                  ? "bg-white text-black font-semibold shadow-xs"
+                  : "text-text-muted hover:text-white hover:bg-surface/50 border border-transparent"
               }`}
             >
-              <span className="font-semibold">{level.label}</span>
-              <span className="text-[10px] opacity-75 font-normal">{level.sublabel}</span>
+              <span className="font-medium">{level.label}</span>
+              <span className="text-[10px] opacity-75 font-normal">
+                {level.sublabel}
+              </span>
             </button>
           );
         })}
