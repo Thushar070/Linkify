@@ -8,8 +8,6 @@ import BullshitLevelSelector, {
 import ModeSelector, { LinkedinMode } from "@/components/ModeSelector";
 import GenerateButton from "@/components/GenerateButton";
 import LinkedInPostCard from "@/components/LinkedInPostCard";
-import StatsGrid from "@/components/StatsGrid";
-import RealityCheckCard from "@/components/RealityCheckCard";
 import LoadingState from "@/components/LoadingState";
 import { RotateCcw } from "lucide-react";
 
@@ -110,31 +108,8 @@ export default function Home() {
             className="space-y-6 pt-4 border-t border-border/80 animate-in fade-in duration-300"
             aria-label="Generated Results"
           >
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-bold text-text tracking-tight">
-                  Generated Thought Leadership
-                </h2>
-                <p className="text-xs text-text-muted">
-                  Ready to post to your non-consenting professional network
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-accent font-semibold px-2.5 py-1 rounded-full bg-accent-subtle border border-accent/20">
-                  Ready for LinkedIn
-                </span>
-              </div>
-            </div>
-
             {/* LinkedIn Post Card */}
             <LinkedInPostCard />
-
-            {/* Inflation & Synergy Stats */}
-            <StatsGrid />
-
-            {/* Reality Check Audit */}
-            <RealityCheckCard />
           </section>
         )}
       </main>
