@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputCard from "@/components/InputCard";
 import ModeSelector, { LinkedinMode } from "@/components/ModeSelector";
 import GenerateButton from "@/components/GenerateButton";
@@ -9,7 +9,15 @@ import LoadingState from "@/components/LoadingState";
 import EmptyState from "@/components/EmptyState";
 import AmbientNetwork3D from "@/components/AmbientNetwork3D";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { AlertCircle, RotateCcw } from "lucide-react";
+import HistoryPanel from "@/components/HistoryPanel";
+import {
+  getHistory,
+  saveToHistory,
+  deleteHistoryEntry,
+  clearHistory,
+  HistoryEntry,
+} from "@/lib/history";
+import { AlertCircle, RotateCcw, Clock } from "lucide-react";
 
 function HomeContent() {
   const [sentence, setSentence] = useState("");
@@ -18,6 +26,13 @@ function HomeContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [generatedPostText, setGeneratedPostText] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
+
+  // Load history from localStorage on mount
+  useEffect(() => {
+    setHistory(getHistory());
+  }, []);
 
   const handleGenerate = async () => {
     if (!sentence.trim() || isLoading) return;
@@ -54,6 +69,19 @@ function HomeContent() {
         setGeneratedPostText(data.postText);
         setHasGenerated(true);
         setError(null);
+
+        const savedEntry = saveToHistory({
+          originalSentence: sentence.trim(),
+          mode,
+          postText: data.postText,
+        });
+
+        if (savedEntry) {
+          setHistory((prev) => [
+            savedEntry,
+            ...prev.filter((item) => item.id !== savedEntry.id),
+          ].slice(0, 50));
+        }
       } else {
         setError(
           "Generation temporarily unavailable, please try again shortly."
@@ -72,6 +100,24 @@ function HomeContent() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSelectHistoryEntry = (entry: HistoryEntry) => {
+    setSentence(entry.originalSentence);
+    setMode(entry.mode);
+    setGeneratedPostText(entry.postText);
+    setHasGenerated(true);
+    setError(null);
+  };
+
+  const handleDeleteHistoryEntry = (id: string) => {
+    deleteHistoryEntry(id);
+    setHistory((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleClearHistory = () => {
+    clearHistory();
+    setHistory([]);
   };
 
   const handleReset = () => {
@@ -95,7 +141,22 @@ function HomeContent() {
               </sup>
             </h1>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center gap-2.5">
+            <button
+              type="button"
+              onClick={() => setIsHistoryOpen(true)}
+              className="px-3 py-2 rounded-xl border border-neutral-800 bg-surface/90 hover:bg-surface-hover hover:border-neutral-700 text-neutral-300 hover:text-white transition-all text-xs sm:text-sm font-medium inline-flex items-center gap-2 cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-500/80 active:scale-98"
+              title="View generation history"
+              aria-label="View generation history"
+            >
+              <Clock className="w-4 h-4 text-amber-400" />
+              <span className="hidden sm:inline">History</span>
+              {history.length > 0 && (
+                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-neutral-800 text-amber-400 border border-neutral-700">
+                  {history.length}
+                </span>
+              )}
+            </button>
             <ModeSelector
               value={mode}
               onChange={setMode}
@@ -231,6 +292,16 @@ function HomeContent() {
           </div>
         </div>
       </footer>
+
+      {/* History Slide-out Drawer */}
+      <HistoryPanel
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+        history={history}
+        onSelectEntry={handleSelectHistoryEntry}
+        onDeleteEntry={handleDeleteHistoryEntry}
+        onClearHistory={handleClearHistory}
+      />
     </div>
   );
 }
