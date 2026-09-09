@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import CopyButton from "./CopyButton";
 
 export const MOCK_POST = `Most people see an ordinary task.
@@ -27,6 +29,35 @@ interface LinkedInPostCardProps {
 export default function LinkedInPostCard({
   postText = MOCK_POST,
 }: LinkedInPostCardProps) {
+  const [displayedText, setDisplayedText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    if (!postText) {
+      setDisplayedText("");
+      setIsTyping(false);
+      return;
+    }
+
+    const words = postText.split(" ");
+    let currentWordIndex = 0;
+    setIsTyping(true);
+    setDisplayedText(words[0] || "");
+
+    const interval = setInterval(() => {
+      currentWordIndex += 1;
+      if (currentWordIndex >= words.length) {
+        setDisplayedText(postText);
+        setIsTyping(false);
+        clearInterval(interval);
+      } else {
+        setDisplayedText(words.slice(0, currentWordIndex + 1).join(" "));
+      }
+    }, 24);
+
+    return () => clearInterval(interval);
+  }, [postText]);
+
   return (
     <div className="bg-surface rounded-linkedin border border-border shadow-xs overflow-hidden interactive-card">
       {/* Header with title and copy button */}
@@ -37,10 +68,16 @@ export default function LinkedInPostCard({
         <CopyButton text={postText} />
       </div>
 
-      {/* Post body */}
+      {/* Post body with typewriter streaming effect */}
       <div className="p-4 sm:p-5">
         <div className="text-sm text-text whitespace-pre-line leading-relaxed font-normal">
-          {postText}
+          {displayedText}
+          {isTyping && (
+            <span
+              className="inline-block w-1.5 h-3.5 ml-1 bg-accent animate-pulse align-middle rounded-xs"
+              aria-hidden="true"
+            />
+          )}
         </div>
       </div>
     </div>
