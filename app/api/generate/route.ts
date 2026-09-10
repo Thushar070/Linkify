@@ -6,6 +6,14 @@ import { generateWithFailover } from "@/lib/llmClient";
 
 const VALID_MODES: LinkedinMode[] = ["linkedinify", "ceo", "max-bs"];
 
+// PRODUCTION ARCHITECTURE NOTE (Serverless / Netlify Functions):
+// Netlify Functions execute within ephemeral container instances. In-memory Maps
+// (ipRequestTimestamps, ipAbuseRecords) persist only across warm invocations of the same
+// container and are cleared during cold starts or across parallel instances/regions.
+// This in-memory layer serves as a lightweight, zero-dependency best-effort guardrail.
+// For globally synchronized, distributed rate limiting in high-scale environments, an
+// external datastore (e.g. Redis/Upstash) would be connected.
+
 // 1. Normal in-memory rate limiter: max 10 requests per 60 seconds per IP
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 const MAX_REQUESTS_PER_WINDOW = 10;
