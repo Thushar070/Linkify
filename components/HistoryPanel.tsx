@@ -84,7 +84,7 @@ export default function HistoryPanel({
 
       {/* Left Sidebar Panel */}
       <aside
-        className={`fixed top-0 left-0 z-50 md:z-30 h-full w-80 max-w-[85vw] bg-surface border-r border-border shadow-2xl md:shadow-none flex flex-col transition-transform duration-300 ease-in-out transform ${
+        className={`fixed top-0 left-0 z-50 md:z-30 h-full w-80 max-w-[90vw] sm:max-w-xs bg-surface border-r border-border shadow-2xl md:shadow-none flex flex-col transition-transform duration-300 ease-in-out transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         role="region"
@@ -113,7 +113,7 @@ export default function HistoryPanel({
               <button
                 type="button"
                 onClick={() => exportHistoryAsJson(history)}
-                className="p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-surface-subtle transition-colors cursor-pointer"
+                className="p-2 min-h-[36px] min-w-[36px] flex items-center justify-center rounded-lg text-text-muted hover:text-text hover:bg-surface-subtle transition-colors cursor-pointer"
                 title="Download history as JSON"
                 aria-label="Download history as JSON"
               >
@@ -123,7 +123,7 @@ export default function HistoryPanel({
             <button
               type="button"
               onClick={handleClose}
-              className="p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-surface-subtle transition-colors cursor-pointer"
+              className="p-2 min-h-[36px] min-w-[36px] flex items-center justify-center rounded-lg text-text-muted hover:text-text hover:bg-surface-subtle transition-colors cursor-pointer"
               aria-label="Close sidebar"
               title="Close sidebar"
             >
@@ -153,19 +153,19 @@ export default function HistoryPanel({
               >
                 {/* Top row: Mode badge, relative timestamp, actions */}
                 <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide uppercase bg-surface-subtle text-text border border-border">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide uppercase bg-surface-subtle text-text border border-border shrink-0">
                       {getModeLabel(item.mode)}
                     </span>
-                    <span className="text-[11px] text-text-subtle">
+                    <span className="text-[11px] text-text-subtle truncate">
                       {formatRelativeTime(item.timestamp)}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1.5 shrink-0">
                     <CopyButton
                       text={item.postText}
-                      className="px-2 py-1 text-[11px] rounded-md"
+                      className="px-2 py-1 min-h-[32px] text-[11px] rounded-md"
                     />
                     <button
                       type="button"
@@ -173,7 +173,7 @@ export default function HistoryPanel({
                         e.stopPropagation();
                         onDeleteEntry(item.id);
                       }}
-                      className="p-1 rounded-md text-text-subtle hover:text-text hover:bg-surface-subtle transition-colors cursor-pointer"
+                      className="p-1.5 min-h-[32px] min-w-[32px] flex items-center justify-center rounded-md text-text-subtle hover:text-text hover:bg-surface-subtle transition-colors cursor-pointer"
                       title="Delete entry"
                       aria-label="Delete entry"
                     >
@@ -186,7 +186,7 @@ export default function HistoryPanel({
                 <button
                   type="button"
                   onClick={() => handleEntryClick(item)}
-                  className="text-left group/btn focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-text rounded-xs cursor-pointer"
+                  className="w-full text-left group/btn focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-text rounded-xs cursor-pointer min-h-[44px] flex flex-col justify-center"
                 >
                   <p className="text-xs font-medium text-text line-clamp-2 leading-snug">
                     &ldquo;{item.originalSentence}&rdquo;
@@ -217,14 +217,14 @@ export default function HistoryPanel({
                       onClearHistory();
                       setConfirmClear(false);
                     }}
-                    className="px-2.5 py-1 rounded-md bg-text text-background text-xs font-bold transition-opacity hover:opacity-90 cursor-pointer"
+                    className="px-2.5 py-1.5 min-h-[36px] rounded-md bg-text text-background text-xs font-bold transition-opacity hover:opacity-90 cursor-pointer"
                   >
                     Confirm
                   </button>
                   <button
                     type="button"
                     onClick={() => setConfirmClear(false)}
-                    className="px-2.5 py-1 rounded-md bg-surface-subtle text-text text-xs hover:bg-surface-hover transition-colors cursor-pointer border border-border"
+                    className="px-2.5 py-1.5 min-h-[36px] rounded-md bg-surface-subtle text-text text-xs hover:bg-surface-hover transition-colors cursor-pointer border border-border"
                   >
                     Cancel
                   </button>
@@ -235,7 +235,7 @@ export default function HistoryPanel({
                 <button
                   type="button"
                   onClick={() => exportHistoryAsJson(history)}
-                  className="flex-1 py-1.5 px-2 rounded-lg border border-border bg-surface-subtle hover:bg-surface-hover text-text text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="flex-1 py-2 px-2.5 min-h-[40px] rounded-lg border border-border bg-surface-subtle hover:bg-surface-hover text-text text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                   title="Export history to JSON"
                 >
                   <Download className="w-3.5 h-3.5" />
@@ -244,7 +244,7 @@ export default function HistoryPanel({
                 <button
                   type="button"
                   onClick={() => setConfirmClear(true)}
-                  className="py-1.5 px-2.5 rounded-lg border border-border bg-transparent text-text-muted hover:text-text hover:bg-surface-subtle text-xs font-medium transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                  className="py-2 px-3 min-h-[40px] rounded-lg border border-border bg-transparent text-text-muted hover:text-text hover:bg-surface-subtle text-xs font-medium transition-colors flex items-center justify-center gap-1 cursor-pointer"
                   title="Clear all generation history"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
