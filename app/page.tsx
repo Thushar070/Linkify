@@ -17,7 +17,16 @@ import {
   clearHistory,
   HistoryEntry,
 } from "@/lib/history";
-import { AlertCircle, RotateCcw, Clock } from "lucide-react";
+import { playDingSound, getSoundPreference, setSoundPreference } from "@/lib/sound";
+import {
+  AlertCircle,
+  RotateCcw,
+  PanelLeft,
+  Sun,
+  Moon,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 
 function HomeContent() {
   const [sentence, setSentence] = useState("");
@@ -28,11 +37,39 @@ function HomeContent() {
   const [error, setError] = useState<string | null>(null);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [isSoundEnabled, setIsSoundEnabled] = useState(false);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
 
-  // Load history from localStorage on mount
+  // Load history, sound preference, and current theme on mount
   useEffect(() => {
     setHistory(getHistory());
+    setIsSoundEnabled(getSoundPreference());
+
+    const isDark = document.documentElement.classList.contains("dark");
+    setTheme(isDark ? "dark" : "light");
   }, []);
+
+  const handleToggleSound = () => {
+    const nextState = !isSoundEnabled;
+    setIsSoundEnabled(nextState);
+    setSoundPreference(nextState);
+    if (nextState) {
+      playDingSound();
+    }
+  };
+
+  const handleToggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    if (nextTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    try {
+      localStorage.setItem("linkify_theme", nextTheme);
+    } catch {}
+  };
 
   const handleGenerate = async () => {
     if (!sentence.trim() || isLoading) return;
@@ -69,6 +106,11 @@ function HomeContent() {
         setGeneratedPostText(data.postText);
         setHasGenerated(true);
         setError(null);
+
+        // Play ding sound if enabled
+        if (isSoundEnabled) {
+          playDingSound();
+        }
 
         const savedEntry = saveToHistory({
           originalSentence: sentence.trim(),
@@ -129,34 +171,74 @@ function HomeContent() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-text flex flex-col justify-between selection:bg-accent selection:text-black">
+    <div
+      className={`min-h-screen bg-background text-text flex flex-col justify-between selection:bg-text selection:text-background transition-[padding] duration-300 ${
+        isHistoryOpen ? "md:pl-80" : "md:pl-0"
+      }`}
+    >
       {/* Top Header */}
-      <header className="border-b border-border/60 backdrop-blur-md sticky top-0 z-20 bg-black/60">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-5 sm:py-6 flex items-center justify-between">
+      <header className="border-b border-border backdrop-blur-md sticky top-0 z-20 bg-background/80">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white select-none inline-flex items-baseline">
-              Linkedinify
-              <sup className="text-[0.5em] font-semibold text-neutral-400 ml-0.5 select-none">
-                ™
-              </sup>
-            </h1>
-          </div>
-          <div className="flex items-center gap-2.5">
             <button
               type="button"
-              onClick={() => setIsHistoryOpen(true)}
-              className="px-3 py-2 rounded-xl border border-neutral-800 bg-surface/90 hover:bg-surface-hover hover:border-neutral-700 text-neutral-300 hover:text-white transition-all text-xs sm:text-sm font-medium inline-flex items-center gap-2 cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-500/80 active:scale-98"
-              title="View generation history"
-              aria-label="View generation history"
+              onClick={() => setIsHistoryOpen((prev) => !prev)}
+              className="p-2 rounded-xl border border-border bg-surface hover:bg-surface-hover text-text transition-all cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text flex items-center gap-1.5"
+              title={isHistoryOpen ? "Close history sidebar" : "Open history sidebar"}
+              aria-label={isHistoryOpen ? "Close history sidebar" : "Open history sidebar"}
             >
-              <Clock className="w-4 h-4 text-amber-400" />
-              <span className="hidden sm:inline">History</span>
+              <PanelLeft className="w-4 h-4 text-text" />
+              <span className="text-xs font-semibold hidden sm:inline">History</span>
               {history.length > 0 && (
-                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-neutral-800 text-amber-400 border border-neutral-700">
+                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-surface-subtle text-text-muted border border-border">
                   {history.length}
                 </span>
               )}
             </button>
+            <h1 className="text-xl sm:text-2xl font-black tracking-tight text-text select-none inline-flex items-baseline">
+              Linkedinify
+              <sup className="text-[0.5em] font-semibold text-text-muted ml-0.5 select-none">
+                ™
+              </sup>
+            </h1>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* Sound Toggle Button */}
+            <button
+              type="button"
+              onClick={handleToggleSound}
+              className={`p-2 rounded-xl border transition-all cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text ${
+                isSoundEnabled
+                  ? "border-text bg-text text-background font-semibold shadow-xs"
+                  : "border-border bg-surface text-text-muted hover:text-text hover:bg-surface-hover"
+              }`}
+              title={isSoundEnabled ? "Mute completion sound" : "Enable completion sound"}
+              aria-label={isSoundEnabled ? "Mute completion sound" : "Enable completion sound"}
+            >
+              {isSoundEnabled ? (
+                <Volume2 className="w-4 h-4" />
+              ) : (
+                <VolumeX className="w-4 h-4" />
+              )}
+            </button>
+
+            {/* Theme Toggle Button */}
+            <button
+              type="button"
+              onClick={handleToggleTheme}
+              className="p-2 rounded-xl border border-border bg-surface hover:bg-surface-hover text-text transition-all cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text"
+              title={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+              aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+            >
+              {theme === "dark" ? (
+                <Sun className="w-4 h-4 text-text" />
+              ) : (
+                <Moon className="w-4 h-4 text-text" />
+              )}
+            </button>
+
+            {/* Mode Selector */}
             <ModeSelector
               value={mode}
               onChange={setMode}
@@ -172,10 +254,10 @@ function HomeContent() {
 
         {/* Hero Title */}
         <div className="space-y-2 max-w-2xl">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-[1.15]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-text leading-[1.15]">
             Transform mundane actions into unhinged influence.
           </h2>
-          <p className="text-base sm:text-lg text-neutral-400 font-normal leading-relaxed">
+          <p className="text-base sm:text-lg text-text-muted font-normal leading-relaxed">
             Write what happened in plain English. We&apos;ll turn it into viral, unapologetic corporate thought leadership.
           </p>
         </div>
@@ -203,17 +285,17 @@ function HomeContent() {
                   type="button"
                   onClick={handleReset}
                   disabled={isLoading}
-                  className="px-5 py-3.5 rounded-xl border border-neutral-800 bg-surface text-neutral-300 hover:text-white hover:bg-surface-hover text-sm sm:text-base font-semibold inline-flex items-center justify-center gap-2 transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-500/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                  className="px-5 py-3.5 rounded-xl border border-border bg-surface text-text hover:bg-surface-hover text-sm sm:text-base font-semibold inline-flex items-center justify-center gap-2 transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
-                  <RotateCcw className="w-4 h-4 text-neutral-400" />
+                  <RotateCcw className="w-4 h-4 text-text-subtle" />
                   <span>Reset</span>
                 </button>
               )}
             </div>
 
-            <div className="hidden sm:flex items-center gap-2 text-xs text-neutral-500 font-medium">
+            <div className="hidden sm:flex items-center gap-2 text-xs text-text-subtle font-medium">
               <span>Persona:</span>
-              <span className="text-neutral-300 font-semibold uppercase tracking-wider text-[11px]">
+              <span className="text-text font-bold uppercase tracking-wider text-[11px]">
                 {mode === "ceo" ? "CEO Mode" : mode === "max-bs" ? "Maximum Bullshit" : "LinkedInify"}
               </span>
             </div>
@@ -223,20 +305,20 @@ function HomeContent() {
         {/* Error notification banner */}
         {error && (
           <section
-            className="p-4 sm:p-5 rounded-xl border border-amber-500/20 bg-amber-950/20 text-neutral-200 flex items-start sm:items-center justify-between gap-4 text-sm sm:text-base animate-slide-up-fade shadow-lg"
+            className="p-4 sm:p-5 rounded-xl border border-border bg-surface text-text flex items-start sm:items-center justify-between gap-4 text-sm sm:text-base animate-slide-up-fade shadow-xs"
             role="alert"
           >
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0">
-                <AlertCircle className="w-4 h-4 text-amber-400" />
+              <div className="w-8 h-8 rounded-lg bg-surface-subtle border border-border flex items-center justify-center shrink-0">
+                <AlertCircle className="w-4 h-4 text-text" />
               </div>
-              <span className="text-neutral-200 text-sm sm:text-base font-medium leading-relaxed">{error}</span>
+              <span className="text-text text-sm sm:text-base font-medium leading-relaxed">{error}</span>
             </div>
             <button
               type="button"
               onClick={handleGenerate}
               disabled={isLoading || sentence.trim().length < 5}
-              className="px-3 py-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 text-xs sm:text-sm font-semibold transition-colors cursor-pointer shrink-0 disabled:opacity-50 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-500/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              className="px-3 py-1.5 rounded-lg border border-border bg-surface-subtle hover:bg-surface-hover text-text text-xs sm:text-sm font-semibold transition-colors cursor-pointer shrink-0 disabled:opacity-50 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               Try again
             </button>
@@ -245,7 +327,7 @@ function HomeContent() {
 
         {/* Loading State */}
         {isLoading && (
-          <section className="pt-6 border-t border-neutral-800/80">
+          <section className="pt-6 border-t border-border">
             <LoadingState />
           </section>
         )}
@@ -253,7 +335,7 @@ function HomeContent() {
         {/* Results section */}
         {!isLoading && hasGenerated && (
           <section
-            className="space-y-6 pt-6 border-t border-neutral-800/80 animate-slide-up-fade"
+            className="space-y-6 pt-6 border-t border-border animate-slide-up-fade"
             aria-label="Generated Results"
           >
             <LinkedInPostCard
@@ -276,24 +358,24 @@ function HomeContent() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-16 border-t border-border/80 py-8">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-neutral-500">
+      <footer className="mt-16 border-t border-border py-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-text-subtle">
           <div className="flex items-baseline gap-1">
-            <span className="font-semibold text-neutral-300 inline-flex items-baseline">
+            <span className="font-semibold text-text inline-flex items-baseline">
               Linkedinify
-              <sup className="text-[0.6em] font-semibold text-neutral-400 ml-0.5">
+              <sup className="text-[0.6em] font-semibold text-text-muted ml-0.5">
                 ™
               </sup>
             </span>
             <span>— The satire thought leadership engine.</span>
           </div>
-          <div className="text-neutral-500 text-xs">
+          <div className="text-text-muted text-xs">
             Zero fluff. Infinite synergy.
           </div>
         </div>
       </footer>
 
-      {/* History Slide-out Drawer */}
+      {/* History Sidebar Panel */}
       <HistoryPanel
         isOpen={isHistoryOpen}
         onClose={() => setIsHistoryOpen(false)}
@@ -313,4 +395,3 @@ export default function Home() {
     </ErrorBoundary>
   );
 }
-
