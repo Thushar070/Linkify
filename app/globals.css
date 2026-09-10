@@ -54,6 +54,12 @@
   --radius-linkedin: 8px;
 }
 
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 body {
   background-color: var(--color-background);
   color: var(--color-text);

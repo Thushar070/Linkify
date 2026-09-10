@@ -194,7 +194,7 @@ export default function AmbientNetwork3D() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none select-none absolute -top-12 -right-8 sm:top-2 sm:right-6 md:right-16 w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 opacity-25 hover:opacity-40 transition-opacity duration-700 z-0"
+      className="pointer-events-none select-none absolute -top-6 right-0 sm:top-2 sm:right-6 md:right-16 w-36 h-36 sm:w-64 sm:h-64 md:w-80 md:h-80 opacity-20 dark:opacity-25 transition-opacity duration-700 z-0 overflow-hidden"
       ref={mountRef}
     />
   );

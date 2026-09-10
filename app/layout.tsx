@@ -65,7 +65,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full font-sans antialiased bg-background text-text">
+      <body className="min-h-full font-sans antialiased bg-background text-text overflow-x-hidden">
         {children}
       </body>
     </html>
