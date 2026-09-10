@@ -46,10 +46,10 @@ export default function CopyButton({ text, className = "" }: CopyButtonProps) {
       type="button"
       onClick={handleCopy}
       aria-label={copied ? "Copied to clipboard" : "Copy post text"}
-      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border transition-all duration-200 cursor-pointer active:scale-95 select-none focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-500/80 focus-visible:ring-offset-1 focus-visible:ring-offset-black ${
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border transition-all duration-200 cursor-pointer active:scale-95 select-none focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-1 focus-visible:ring-offset-background ${
         copied
-          ? "border-accent-success/40 bg-accent-success-subtle text-accent-success shadow-2xs"
-          : "border-border bg-surface text-text hover:border-text-muted hover:bg-surface-hover shadow-2xs"
+          ? "border-text bg-text text-background shadow-xs font-semibold"
+          : "border-border bg-surface text-text hover:border-text-muted hover:bg-surface-hover shadow-xs"
       } ${className}`}
     >
       <span
@@ -58,7 +58,7 @@ export default function CopyButton({ text, className = "" }: CopyButtonProps) {
         }`}
       >
         {copied ? (
-          <Check className="w-3.5 h-3.5 text-accent-success" />
+          <Check className="w-3.5 h-3.5 text-background" />
         ) : (
           <Copy className="w-3.5 h-3.5 text-text-muted" />
         )}

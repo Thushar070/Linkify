@@ -19,7 +19,7 @@ export default function GenerateButton({
       type="button"
       onClick={onClick}
       disabled={disabled || loading}
-      className={`relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-accent text-accent-foreground font-bold text-base sm:text-lg transition-all duration-300 ease-out cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 shadow-[0_0_16px_rgba(229,169,60,0.25)] hover:shadow-[0_0_28px_rgba(229,169,60,0.5)] hover:bg-accent-hover active:scale-[0.99] select-none focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
+      className={`relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-accent text-accent-foreground font-bold text-base sm:text-lg border border-border transition-all duration-200 ease-out cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 hover:bg-accent-hover active:scale-[0.99] select-none shadow-sm hover:shadow-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
         loading ? "pr-8 pl-7" : ""
       }`}
     >

@@ -84,11 +84,11 @@ export default function LinkedInPostCard({
               type="button"
               onClick={onRegenerate}
               disabled={isRegenerating}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border bg-surface text-text-muted hover:text-white hover:bg-surface-hover text-xs font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-500/80 focus-visible:ring-offset-1 focus-visible:ring-offset-black"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border bg-surface text-text-muted hover:text-text hover:bg-surface-hover text-xs font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-1 focus-visible:ring-offset-background"
               title="Regenerate post"
             >
               <RotateCw
-                className={`w-3.5 h-3.5 ${isRegenerating ? "animate-spin text-accent" : ""}`}
+                className={`w-3.5 h-3.5 ${isRegenerating ? "animate-spin text-text" : ""}`}
               />
               <span>Regenerate</span>
             </button>
@@ -103,7 +103,7 @@ export default function LinkedInPostCard({
           {displayedText}
           {isTyping && (
             <span
-              className="inline-block w-1.5 h-4 ml-1 bg-accent animate-pulse align-middle rounded-xs"
+              className="inline-block w-1.5 h-4 ml-1 bg-text animate-pulse align-middle rounded-xs"
               aria-hidden="true"
             />
           )}
@@ -112,4 +112,3 @@ export default function LinkedInPostCard({
     </div>
   );
 }
-

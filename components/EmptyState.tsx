@@ -17,25 +17,25 @@ const SAMPLE_PROMPTS = [
 export default function EmptyState({ onSelectPrompt }: EmptyStateProps) {
   return (
     <section
-      className="border border-dashed border-neutral-800/80 bg-[#090909]/60 rounded-2xl p-6 sm:p-10 text-center space-y-5 animate-slide-up-fade"
+      className="border border-dashed border-border bg-surface/50 rounded-2xl p-6 sm:p-10 text-center space-y-5 animate-slide-up-fade"
       aria-label="Empty State and Prompt Suggestions"
     >
-      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
+      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-surface-subtle border border-border text-text">
         <Sparkles className="w-5 h-5" />
       </div>
 
       <div className="space-y-1.5 max-w-md mx-auto">
-        <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
+        <h3 className="text-base sm:text-lg font-bold text-text tracking-tight">
           Awaiting mundane human activity
         </h3>
-        <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+        <p className="text-xs sm:text-sm text-text-muted leading-relaxed">
           Type any ordinary event above, or select an everyday occurrence below to see it transformed into viral corporate thought leadership.
         </p>
       </div>
 
       {/* Suggested Inspiration Pills */}
       <div className="pt-2">
-        <div className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400 mb-3">
+        <div className="text-[11px] font-semibold uppercase tracking-wider text-text-subtle mb-3">
           Need inspiration? Try one of these:
         </div>
         <div className="flex flex-wrap items-center justify-center gap-2 max-w-xl mx-auto">
@@ -44,7 +44,7 @@ export default function EmptyState({ onSelectPrompt }: EmptyStateProps) {
               key={prompt}
               type="button"
               onClick={() => onSelectPrompt(prompt)}
-              className="px-3.5 py-1.5 rounded-lg border border-neutral-800 bg-surface/80 hover:bg-surface-hover hover:border-neutral-700 text-neutral-300 hover:text-white text-xs sm:text-sm font-medium transition-all duration-150 cursor-pointer text-left focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-500/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              className="px-3.5 py-1.5 rounded-lg border border-border bg-surface hover:bg-surface-hover hover:border-text-muted text-text-muted hover:text-text text-xs sm:text-sm font-medium transition-all duration-150 cursor-pointer text-left focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               &ldquo;{prompt}&rdquo;
             </button>

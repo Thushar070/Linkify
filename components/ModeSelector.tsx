@@ -11,7 +11,6 @@ export interface ModeOption {
   tagline: string;
   description: string;
   icon: React.ComponentType<{ className?: string }>;
-  iconColor: string;
 }
 
 export const MODE_OPTIONS: ModeOption[] = [
@@ -21,7 +20,6 @@ export const MODE_OPTIONS: ModeOption[] = [
     tagline: "Thought Leader",
     description: "Classic viral storytelling, humblebrags & dramatic line breaks",
     icon: Sparkles,
-    iconColor: "text-amber-400",
   },
   {
     id: "ceo",
@@ -29,7 +27,6 @@ export const MODE_OPTIONS: ModeOption[] = [
     tagline: "Executive",
     description: "Ruthless execution, quarterly velocity & unhinged hustle culture",
     icon: Briefcase,
-    iconColor: "text-neutral-200",
   },
   {
     id: "max-bs",
@@ -37,7 +34,6 @@ export const MODE_OPTIONS: ModeOption[] = [
     tagline: "Peak Satire",
     description: "Quantum corporate word salad, paradigm shifts & cosmic synergy",
     icon: Flame,
-    iconColor: "text-orange-500",
   },
 ];
 
@@ -93,24 +89,24 @@ export default function ModeSelector({
 
   return (
     <div ref={containerRef} className="relative inline-block text-left">
-      {/* Claude-style compact trigger pill */}
+      {/* Compact trigger pill */}
       <button
         type="button"
         disabled={disabled}
         onClick={() => setIsOpen((prev) => !prev)}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
-        className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 select-none focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-500/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
+        className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 select-none focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
           isOpen
-            ? "bg-neutral-900 border-neutral-700 text-white shadow-md shadow-black/40 ring-1 ring-neutral-700"
-            : "bg-surface/80 hover:bg-surface-hover border-border text-neutral-300 hover:text-white"
+            ? "bg-surface-hover border-border text-text shadow-sm ring-1 ring-border"
+            : "bg-surface hover:bg-surface-hover border-border text-text"
         }`}
       >
-        <CurrentIcon className={`w-3.5 h-3.5 shrink-0 ${selectedOption.iconColor}`} />
+        <CurrentIcon className="w-3.5 h-3.5 shrink-0 text-text" />
         <span className="font-semibold">{selectedOption.name}</span>
         <ChevronDown
-          className={`w-3.5 h-3.5 text-neutral-400 transition-transform duration-200 ease-out ${
-            isOpen ? "rotate-180 text-white" : ""
+          className={`w-3.5 h-3.5 text-text-subtle transition-transform duration-200 ease-out ${
+            isOpen ? "rotate-180 text-text" : ""
           }`}
         />
       </button>
@@ -120,9 +116,9 @@ export default function ModeSelector({
         <div
           role="listbox"
           aria-label="Select generation persona"
-          className="absolute right-0 mt-2 w-72 sm:w-80 rounded-xl bg-[#0d0d0d] border border-neutral-800 shadow-2xl p-1.5 z-40 backdrop-blur-xl animate-slide-up-fade"
+          className="absolute right-0 mt-2 w-72 sm:w-80 rounded-xl bg-surface border border-border shadow-2xl p-1.5 z-40 backdrop-blur-xl animate-slide-up-fade"
         >
-          <div className="px-2.5 py-1.5 text-[11px] font-medium text-neutral-500 uppercase tracking-wider">
+          <div className="px-2.5 py-1.5 text-[11px] font-semibold text-text-subtle uppercase tracking-wider">
             Generation Persona
           </div>
 
@@ -138,26 +134,26 @@ export default function ModeSelector({
                   role="option"
                   aria-selected={isSelected}
                   onClick={() => handleSelect(option.id)}
-                  className={`w-full text-left flex items-start gap-3 p-2.5 rounded-lg transition-colors duration-150 cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-500/80 focus-visible:ring-offset-1 focus-visible:ring-offset-black ${
+                  className={`w-full text-left flex items-start gap-3 p-2.5 rounded-lg transition-colors duration-150 cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-1 focus-visible:ring-offset-background ${
                     isSelected
-                      ? "bg-neutral-800/80 text-white"
-                      : "hover:bg-neutral-900 text-neutral-300 hover:text-white"
+                      ? "bg-surface-hover text-text font-medium border border-border"
+                      : "hover:bg-surface-subtle text-text-muted hover:text-text border border-transparent"
                   }`}
                 >
-                  <div className="mt-0.5 p-1.5 rounded-md bg-neutral-900 border border-neutral-800 shrink-0">
-                    <Icon className={`w-4 h-4 ${option.iconColor}`} />
+                  <div className="mt-0.5 p-1.5 rounded-md bg-surface-subtle border border-border shrink-0">
+                    <Icon className="w-4 h-4 text-text" />
                   </div>
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-1.5">
-                      <span className="text-xs font-semibold text-white truncate">
+                      <span className="text-xs font-semibold text-text truncate">
                         {option.name}
                       </span>
                       {isSelected && (
-                        <Check className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                        <Check className="w-3.5 h-3.5 text-text shrink-0" />
                       )}
                     </div>
-                    <p className="text-[11px] text-neutral-400 leading-snug mt-0.5 line-clamp-2">
+                    <p className="text-[11px] text-text-muted leading-snug mt-0.5 line-clamp-2">
                       {option.description}
                     </p>
                   </div>
