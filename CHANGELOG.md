@@ -135,5 +135,30 @@ All notable changes to the Linkedinify™ project will be documented in this fil
 - Click-to-load allows instant restoration of any past prompt, mode, and generated post back into the editor.
 - Confirmed zero errors on `npm run build` and `npx tsc --noEmit`.
 
+## Phase 4.7 — LLM Scope Guardrails, Abuse Cooldown, Left Sidebar, Audio & Strict Monochrome
 
+### LLM Scope Guardrail & Abuse Cooldown (Part A)
+- Strengthened system prompt in `lib/prompts/systemPrompt.ts` with strict scope enforcement and mandatory fixed refusal string for non-event inputs.
+- Added lightweight server-side check in `app/api/generate/route.ts` detecting code syntax, jailbreak attempts, and off-topic prompt injections before reaching the model.
+- Added IP-based abuse tracking: 3 suspicious attempts within a 10-minute window trigger a 10-minute temporary cooldown (HTTP 403) with an on-theme message.
+- Maintained independent separation between normal usage rate limits (10 req/min, HTTP 429) and abuse cooldown blocks.
 
+### Sound Completion Ding & Header Toggle (Part B)
+- Added synthesized audio chime using the Web Audio API (`lib/sound.ts`) playing on successful post generation.
+- Added header sound toggle button (`Volume2` / `VolumeX`), disabled by default and persisted in `localStorage`.
+
+### Generation History JSON Export (Part C)
+- Added "Download history" action in `HistoryPanel.tsx` exporting complete generation history as formatted `.json` file with all fields (id, timestamp, date, sentence, mode, postText).
+
+### History Panel Redesign — Collapsible Left Sidebar (Part D)
+- Redesigned `HistoryPanel.tsx` from a right drawer to a persistent-feeling left-side panel.
+- On desktop, implemented collapsible left sidebar that smoothly shifts main content layout when open/closed.
+- On mobile, maintained slide-in overlay with backdrop and body scroll lock.
+- Retained all existing capabilities: click-to-load into editor, single-item deletion, inline copy, and clear all with confirmation.
+
+### Theme — Strict Black & White with Light/Dark Mode Toggle (Part E)
+- Rebuilt color system to be strictly monochrome: pure black (`#000000`), pure white (`#FFFFFF`), and neutral grays across all UI chrome with zero amber or colored accents.
+- Preserved the Three.js ambient rotating mesh as the deliberate visual accent point.
+- Added light/dark theme switch (`Sun` / `Moon` icon in header) with `localStorage` persistence and `prefers-color-scheme` system default.
+- Implemented anti-flicker inline theme hydration script in `app/layout.tsx`.
+- Refactored all components (`InputCard`, `ModeSelector`, `GenerateButton`, `LinkedInPostCard`, `CopyButton`, `EmptyState`, `ErrorBoundary`, `LoadingState`, and error alert banner) to use dynamic theme-aware tokens with verified WCAG AA contrast.
