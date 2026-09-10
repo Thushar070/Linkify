@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,36 +10,29 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#000000",
+        background: "var(--color-background)",
         surface: {
-          DEFAULT: "#0D0D0D",
-          subtle: "#171717",
-          hover: "#222222",
+          DEFAULT: "var(--color-surface)",
+          subtle: "var(--color-surface-subtle)",
+          hover: "var(--color-surface-hover)",
         },
         border: {
-          DEFAULT: "#262626",
-          subtle: "#1A1A1A",
+          DEFAULT: "var(--color-border)",
+          subtle: "var(--color-border-subtle)",
         },
         text: {
-          DEFAULT: "#FFFFFF",
-          muted: "#A3A3A3",
-          subtle: "#666666",
+          DEFAULT: "var(--color-text)",
+          muted: "var(--color-text-muted)",
+          subtle: "var(--color-text-subtle)",
         },
         accent: {
-          DEFAULT: "#E5A93C",
-          hover: "#D97706",
-          subtle: "#241A0B",
-          foreground: "#000000",
+          DEFAULT: "var(--color-accent)",
+          hover: "var(--color-accent-hover)",
+          subtle: "var(--color-accent-subtle)",
+          foreground: "var(--color-accent-foreground)",
         },
-        "accent-warn": {
-          DEFAULT: "#EF4444",
-          hover: "#DC2626",
-          subtle: "#261212",
-        },
-        "accent-success": {
-          DEFAULT: "#22C55E",
-          hover: "#16A34A",
-          subtle: "#0F2615",
+        ring: {
+          focus: "var(--color-ring-focus)",
         },
       },
       fontFamily: {
