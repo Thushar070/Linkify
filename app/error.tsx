@@ -16,7 +16,7 @@ export default function ErrorPage({ error, reset }: ErrorProps) {
 
   return (
     <main className="min-h-screen bg-background text-text flex items-center justify-center p-4 selection:bg-text selection:text-background">
-      <div className="max-w-md w-full rounded-2xl border border-border bg-surface p-8 text-center shadow-2xl space-y-6">
+      <div className="max-w-md w-full rounded-2xl border border-border bg-surface p-6 sm:p-8 text-center shadow-2xl space-y-6">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-surface-subtle border border-border text-text">
           <AlertTriangle className="h-7 w-7" />
         </div>
@@ -37,14 +37,14 @@ export default function ErrorPage({ error, reset }: ErrorProps) {
           <button
             type="button"
             onClick={() => reset()}
-            className="flex-1 inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-accent text-accent-foreground font-bold text-sm hover:bg-accent-hover transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="flex-1 inline-flex items-center justify-center gap-2 min-h-[44px] py-3 px-4 rounded-xl bg-accent text-accent-foreground font-bold text-sm hover:bg-accent-hover transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <RefreshCw className="w-4 h-4" />
             <span>Recalibrate (Retry)</span>
           </button>
           <Link
             href="/"
-            className="inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-border bg-surface-subtle hover:bg-surface-hover text-text font-semibold text-sm transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="inline-flex items-center justify-center gap-2 min-h-[44px] py-3 px-4 rounded-xl border border-border bg-surface-subtle hover:bg-surface-hover text-text font-semibold text-sm transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <Home className="w-4 h-4" />
             <span>Home</span>

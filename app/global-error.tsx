@@ -15,8 +15,8 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 
   return (
     <html lang="en" className="h-full dark">
-      <body className="min-h-full bg-[#000000] text-[#FFFFFF] font-sans antialiased flex items-center justify-center p-4">
-        <div className="max-w-md w-full rounded-2xl border border-[#262626] bg-[#0d0d0d] p-8 text-center shadow-2xl space-y-6">
+      <body className="min-h-full bg-[#000000] text-[#FFFFFF] font-sans antialiased flex items-center justify-center p-4 overflow-x-hidden">
+        <div className="max-w-md w-full rounded-2xl border border-[#262626] bg-[#0d0d0d] p-6 sm:p-8 text-center shadow-2xl space-y-6">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-[#171717] border border-[#262626] text-[#FFFFFF]">
             <AlertOctagon className="h-7 w-7" />
           </div>
@@ -37,7 +37,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
             <button
               type="button"
               onClick={() => reset()}
-              className="w-full inline-flex items-center justify-center gap-2 py-3 px-5 rounded-xl bg-[#FFFFFF] text-[#000000] font-bold text-sm hover:bg-[#E5E5E5] transition-colors cursor-pointer"
+              className="w-full inline-flex items-center justify-center gap-2 min-h-[44px] py-3 px-5 rounded-xl bg-[#FFFFFF] text-[#000000] font-bold text-sm hover:bg-[#E5E5E5] transition-colors cursor-pointer"
             >
               <RefreshCw className="w-4 h-4" />
               <span>Restart Infrastructure</span>
