@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { HistoryEntry, formatRelativeTime } from "@/lib/history";
+import { HistoryEntry, formatRelativeTime, exportHistoryAsJson } from "@/lib/history";
 import CopyButton from "./CopyButton";
-import { X, Trash2, Clock, ArrowRight, AlertCircle } from "lucide-react";
+import { X, Trash2, Clock, ArrowRight, AlertCircle, Download, PanelLeftClose } from "lucide-react";
 
 interface HistoryPanelProps {
   isOpen: boolean;
@@ -35,9 +35,9 @@ export default function HistoryPanel({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  // Reset clear confirmation and lock body scroll when panel open/closes
+  // Lock body scroll on mobile only when drawer is open
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && window.innerWidth < 768) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -51,85 +51,109 @@ export default function HistoryPanel({
   const getModeLabel = (mode: string) => {
     switch (mode) {
       case "ceo":
-        return "CEO Mode";
+        return "CEO";
       case "max-bs":
         return "Max BS";
       case "linkedinify":
       default:
-        return "LinkedInify";
+        return "LinkedIn";
+    }
+  };
+
+  const handleEntryClick = (item: HistoryEntry) => {
+    onSelectEntry(item);
+    if (window.innerWidth < 768) {
+      onClose();
     }
   };
 
   return (
     <>
-      {/* Backdrop */}
+      {/* Mobile backdrop */}
       <div
-        className={`fixed inset-0 z-40 bg-black/70 backdrop-blur-xs transition-opacity duration-300 ${
+        className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-xs md:hidden transition-opacity duration-300 ${
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Drawer */}
+      {/* Left Sidebar Panel */}
       <aside
-        className={`fixed top-0 right-0 z-50 h-full w-full sm:w-[420px] bg-[#141312] border-l border-[#2A2825] shadow-2xl flex flex-col transition-transform duration-300 ease-out transform ${
-          isOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed top-0 left-0 z-50 md:z-30 h-full w-80 max-w-[85vw] bg-surface border-r border-border shadow-2xl md:shadow-none flex flex-col transition-transform duration-300 ease-in-out transform ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
-        role="dialog"
-        aria-label="Generation History"
-        aria-modal="true"
+        role="region"
+        aria-label="Generation History Sidebar"
       >
-        {/* Drawer Header */}
-        <div className="px-5 py-4 border-b border-[#2A2825] flex items-center justify-between bg-[#171614]">
+        {/* Sidebar Header */}
+        <div className="h-16 px-4 border-b border-border flex items-center justify-between bg-surface shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#E5A93C]/10 border border-[#E5A93C]/20 text-[#E5A93C]">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-surface-subtle border border-border text-text">
               <Clock className="h-4 w-4" />
             </div>
-            <div>
-              <h2 className="text-sm font-semibold tracking-tight text-[#FAF6EE] flex items-center gap-2">
-                Generation History
-                <span className="text-[11px] font-normal px-2 py-0.5 rounded-full bg-[#2A2825] text-[#A8A29E]">
+            <div className="flex items-center gap-2">
+              <h2 className="text-sm font-bold tracking-tight text-text">
+                History
+              </h2>
+              {history.length > 0 && (
+                <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-surface-subtle text-text-muted border border-border">
                   {history.length}
                 </span>
-              </h2>
+              )}
             </div>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="p-1.5 rounded-lg text-[#A8A29E] hover:text-[#FAF6EE] hover:bg-[#2A2825] transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[#E5A93C]/50 cursor-pointer"
-            aria-label="Close history panel"
-          >
-            <X className="h-5 w-5" />
-          </button>
+
+          <div className="flex items-center gap-1">
+            {history.length > 0 && (
+              <button
+                type="button"
+                onClick={() => exportHistoryAsJson(history)}
+                className="p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-surface-subtle transition-colors cursor-pointer"
+                title="Download history as JSON"
+                aria-label="Download history as JSON"
+              >
+                <Download className="h-4 w-4" />
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={onClose}
+              className="p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-surface-subtle transition-colors cursor-pointer"
+              aria-label="Close sidebar"
+              title="Close sidebar"
+            >
+              <PanelLeftClose className="h-4 w-4 hidden md:block" />
+              <X className="h-4 w-4 md:hidden" />
+            </button>
+          </div>
         </div>
 
         {/* History List or Empty State */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        <div className="flex-1 overflow-y-auto p-3 space-y-2.5">
           {history.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center p-6 text-center">
-              <div className="w-12 h-12 rounded-xl border border-dashed border-[#E5A93C]/30 bg-[#E5A93C]/5 flex items-center justify-center text-[#E5A93C] mb-3">
-                <Clock className="w-6 h-6 opacity-80" />
+              <div className="w-12 h-12 rounded-xl border border-dashed border-border bg-surface-subtle flex items-center justify-center text-text-subtle mb-3">
+                <Clock className="w-6 h-6" />
               </div>
-              <h3 className="text-sm font-semibold text-[#FAF6EE]">No history yet</h3>
-              <p className="mt-1.5 text-xs text-[#A8A29E] max-w-[240px] leading-relaxed">
-                Posts you generate will be saved automatically here in your browser for quick access.
+              <h3 className="text-sm font-semibold text-text">No history yet</h3>
+              <p className="mt-1.5 text-xs text-text-muted max-w-[220px] leading-relaxed">
+                Posts you generate will appear here automatically for one-click reloading and export.
               </p>
             </div>
           ) : (
             history.map((item) => (
               <div
                 key={item.id}
-                className="group relative rounded-xl border border-[#2A2825] bg-[#171614] hover:border-[#E5A93C]/40 hover:bg-[#1C1A18] transition-all p-3.5 flex flex-col gap-2.5 shadow-xs"
+                className="group relative rounded-xl border border-border bg-surface hover:border-text-muted hover:bg-surface-hover transition-all p-3 flex flex-col gap-2 shadow-xs"
               >
-                {/* Top row: Mode badge, relative timestamp, action buttons */}
+                {/* Top row: Mode badge, relative timestamp, actions */}
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium tracking-wide uppercase bg-[#2A2825] text-[#E5A93C] border border-[#E5A93C]/20">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide uppercase bg-surface-subtle text-text border border-border">
                       {getModeLabel(item.mode)}
                     </span>
-                    <span className="text-[11px] text-[#A8A29E]">
+                    <span className="text-[11px] text-text-subtle">
                       {formatRelativeTime(item.timestamp)}
                     </span>
                   </div>
@@ -145,8 +169,8 @@ export default function HistoryPanel({
                         e.stopPropagation();
                         onDeleteEntry(item.id);
                       }}
-                      className="p-1 rounded-md text-[#78716C] hover:text-red-400 hover:bg-red-950/20 transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-red-500/50 cursor-pointer"
-                      title="Delete this entry"
+                      className="p-1 rounded-md text-text-subtle hover:text-text hover:bg-surface-subtle transition-colors cursor-pointer"
+                      title="Delete entry"
                       aria-label="Delete entry"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -154,19 +178,16 @@ export default function HistoryPanel({
                   </div>
                 </div>
 
-                {/* Original prompt sentence */}
+                {/* Prompt Sentence Preview & Click to Load */}
                 <button
                   type="button"
-                  onClick={() => {
-                    onSelectEntry(item);
-                    onClose();
-                  }}
-                  className="text-left group/btn focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-[#E5A93C] rounded-sm cursor-pointer"
+                  onClick={() => handleEntryClick(item)}
+                  className="text-left group/btn focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-text rounded-xs cursor-pointer"
                 >
-                  <p className="text-xs sm:text-sm font-medium text-[#FAF6EE] line-clamp-2 leading-snug group-hover/btn:text-[#E5A93C] transition-colors">
+                  <p className="text-xs font-medium text-text line-clamp-2 leading-snug">
                     &ldquo;{item.originalSentence}&rdquo;
                   </p>
-                  <div className="mt-1.5 flex items-center gap-1 text-[11px] text-[#A8A29E] group-hover/btn:text-[#FAF6EE]">
+                  <div className="mt-1.5 flex items-center gap-1 text-[11px] text-text-muted group-hover/btn:text-text">
                     <span>Load into editor</span>
                     <ArrowRight className="w-3 h-3 transition-transform group-hover/btn:translate-x-0.5" />
                   </div>
@@ -176,14 +197,14 @@ export default function HistoryPanel({
           )}
         </div>
 
-        {/* Footer with Clear All */}
+        {/* Footer Actions */}
         {history.length > 0 && (
-          <div className="p-3.5 border-t border-[#2A2825] bg-[#171614] flex items-center justify-between gap-3">
+          <div className="p-3 border-t border-border bg-surface flex flex-col gap-2 shrink-0">
             {confirmClear ? (
-              <div className="flex items-center justify-between w-full gap-2 animate-fade-in">
-                <span className="text-xs text-[#E5A93C] flex items-center gap-1 font-medium">
+              <div className="flex items-center justify-between w-full gap-2 p-1 animate-fade-in">
+                <span className="text-xs text-text flex items-center gap-1 font-medium">
                   <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                  Clear all {history.length} entries?
+                  Clear all?
                 </span>
                 <div className="flex items-center gap-1.5">
                   <button
@@ -192,28 +213,40 @@ export default function HistoryPanel({
                       onClearHistory();
                       setConfirmClear(false);
                     }}
-                    className="px-2.5 py-1 rounded-md bg-red-600/80 hover:bg-red-600 text-white text-xs font-semibold transition-colors cursor-pointer"
+                    className="px-2.5 py-1 rounded-md bg-text text-background text-xs font-bold transition-opacity hover:opacity-90 cursor-pointer"
                   >
-                    Yes, clear
+                    Confirm
                   </button>
                   <button
                     type="button"
                     onClick={() => setConfirmClear(false)}
-                    className="px-2.5 py-1 rounded-md bg-[#2A2825] text-[#FAF6EE] text-xs hover:bg-[#383531] transition-colors cursor-pointer"
+                    className="px-2.5 py-1 rounded-md bg-surface-subtle text-text text-xs hover:bg-surface-hover transition-colors cursor-pointer border border-border"
                   >
                     Cancel
                   </button>
                 </div>
               </div>
             ) : (
-              <button
-                type="button"
-                onClick={() => setConfirmClear(true)}
-                className="w-full py-2 rounded-lg border border-[#2A2825] bg-transparent text-[#A8A29E] hover:text-red-400 hover:border-red-950/40 hover:bg-red-950/10 text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-red-500/50"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-                <span>Clear all history</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => exportHistoryAsJson(history)}
+                  className="flex-1 py-1.5 px-2 rounded-lg border border-border bg-surface-subtle hover:bg-surface-hover text-text text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  title="Export history to JSON"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConfirmClear(true)}
+                  className="py-1.5 px-2.5 rounded-lg border border-border bg-transparent text-text-muted hover:text-text hover:bg-surface-subtle text-xs font-medium transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                  title="Clear all generation history"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Clear</span>
+                </button>
+              </div>
             )}
           </div>
         )}
