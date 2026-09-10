@@ -42,11 +42,14 @@ function HomeContent() {
 
   // Load history, sound preference, and current theme on mount
   useEffect(() => {
-    setHistory(getHistory());
-    setIsSoundEnabled(getSoundPreference());
+    const frameId = requestAnimationFrame(() => {
+      setHistory(getHistory());
+      setIsSoundEnabled(getSoundPreference());
 
-    const isDark = document.documentElement.classList.contains("dark");
-    setTheme(isDark ? "dark" : "light");
+      const isDark = document.documentElement.classList.contains("dark");
+      setTheme(isDark ? "dark" : "light");
+    });
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   const handleToggleSound = () => {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { HistoryEntry, formatRelativeTime, exportHistoryAsJson } from "@/lib/history";
 import CopyButton from "./CopyButton";
 import { X, Trash2, Clock, ArrowRight, AlertCircle, Download, PanelLeftClose } from "lucide-react";
@@ -24,16 +24,21 @@ export default function HistoryPanel({
 }: HistoryPanelProps) {
   const [confirmClear, setConfirmClear] = useState(false);
 
+  const handleClose = useCallback(() => {
+    setConfirmClear(false);
+    onClose();
+  }, [onClose]);
+
   // Close on Escape key press
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
-        onClose();
+        handleClose();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen, handleClose]);
 
   // Lock body scroll on mobile only when drawer is open
   useEffect(() => {
@@ -41,7 +46,6 @@ export default function HistoryPanel({
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
-      setConfirmClear(false);
     }
     return () => {
       document.body.style.overflow = "";
@@ -63,7 +67,7 @@ export default function HistoryPanel({
   const handleEntryClick = (item: HistoryEntry) => {
     onSelectEntry(item);
     if (window.innerWidth < 768) {
-      onClose();
+      handleClose();
     }
   };
 
@@ -74,7 +78,7 @@ export default function HistoryPanel({
         className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-xs md:hidden transition-opacity duration-300 ${
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
-        onClick={onClose}
+        onClick={handleClose}
         aria-hidden="true"
       />
 
@@ -118,7 +122,7 @@ export default function HistoryPanel({
             )}
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className="p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-surface-subtle transition-colors cursor-pointer"
               aria-label="Close sidebar"
               title="Close sidebar"
