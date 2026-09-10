@@ -162,3 +162,25 @@ All notable changes to the Linkedinify™ project will be documented in this fil
 - Added light/dark theme switch (`Sun` / `Moon` icon in header) with `localStorage` persistence and `prefers-color-scheme` system default.
 - Implemented anti-flicker inline theme hydration script in `app/layout.tsx`.
 - Refactored all components (`InputCard`, `ModeSelector`, `GenerateButton`, `LinkedInPostCard`, `CopyButton`, `EmptyState`, `ErrorBoundary`, `LoadingState`, and error alert banner) to use dynamic theme-aware tokens with verified WCAG AA contrast.
+
+## Phase 5 — Pre-Deployment Hardening, Custom Error Pages & Netlify Setup (v1.0)
+
+### Custom Error Pages
+- Created `app/not-found.tsx` custom 404 page with on-brand monochrome styling and return-to-home navigation.
+- Created `app/error.tsx` client-side route error boundary with operational retry action.
+- Created `app/global-error.tsx` root layout error boundary fallback.
+
+### Production Rate Limiting Architecture Review
+- Documented serverless container memory lifecycle constraints: in-memory `Map` acts as a zero-dependency best-effort guardrail per warm container instance.
+- Verified correct HTTP status codes: 400 for input validation / suspicious detection, 403 for IP abuse cooldown, and 429 for request volume rate limiting.
+
+### Netlify Deployment Configuration
+- Installed and configured `@netlify/plugin-nextjs` to package Next.js App Router and serverless `/api/generate` functions.
+- Created `netlify.toml` with `npm run build` and `.next` publish configuration.
+- Created `.env.example` with sanitized placeholder keys.
+- Confirmed zero hardcoded credentials across repository.
+
+### Code Quality & Final Verification
+- Cleaned all tracked files; zero stray debug or test files committed.
+- Confirmed zero errors and zero warnings on `npm run build`, `npx tsc --noEmit`, and `npm run lint`.
+
