@@ -46,7 +46,7 @@ export default function CopyButton({ text, className = "" }: CopyButtonProps) {
       type="button"
       onClick={handleCopy}
       aria-label={copied ? "Copied to clipboard" : "Copy post text"}
-      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border transition-all duration-200 cursor-pointer active:scale-95 select-none focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-1 focus-visible:ring-offset-background ${
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] rounded-md text-xs font-medium border transition-all duration-200 cursor-pointer active:scale-95 select-none focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-1 focus-visible:ring-offset-background ${
         copied
           ? "border-text bg-text text-background shadow-xs font-semibold"
           : "border-border bg-surface text-text hover:border-text-muted hover:bg-surface-hover shadow-xs"
