@@ -110,3 +110,37 @@ export function formatRelativeTime(timestamp: number): string {
   const diffDays = Math.floor(diffHr / 24);
   return `${diffDays}d ago`;
 }
+
+/**
+ * Exports the full local history as a downloadable formatted .json file.
+ * Includes all fields: id, timestamp, date, sentence, originalSentence, mode, postText.
+ */
+export function exportHistoryAsJson(history: HistoryEntry[]): void {
+  if (typeof window === "undefined" || history.length === 0) return;
+
+  try {
+    const exportData = history.map((item) => ({
+      id: item.id,
+      timestamp: item.timestamp,
+      date: new Date(item.timestamp).toISOString(),
+      sentence: item.originalSentence,
+      originalSentence: item.originalSentence,
+      mode: item.mode,
+      postText: item.postText,
+    }));
+
+    const jsonString = JSON.stringify(exportData, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const dateStr = new Date().toISOString().slice(0, 10);
+    link.href = url;
+    link.download = `linkedinify-history-${dateStr}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error("[history] Failed to export history:", err);
+  }
+}
