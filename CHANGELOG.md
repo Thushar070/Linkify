@@ -184,3 +184,15 @@ All notable changes to the Linkedinify™ project will be documented in this fil
 - Cleaned all tracked files; zero stray debug or test files committed.
 - Confirmed zero errors and zero warnings on `npm run build`, `npx tsc --noEmit`, and `npm run lint`.
 
+## Mobile Responsiveness Pass
+
+- Audited and optimized layout for small mobile (375px), large mobile (428px), and tablet (768px) viewports.
+- Header: aligned logo, history toggle, sound toggle, theme toggle, and mode picker into a single row on 375px screens with compact mobile persona badges and normalized button sizes.
+- InputCard: constrained auto-grow height on mobile with internal scroll to keep primary action buttons accessible above the fold.
+- ModeSelector: anchored floating dropdown within viewport bounds with responsive width and clean multi-line description wrapping.
+- Generate & Action buttons: added responsive stretching and min 48px touch targets for touch devices.
+- LinkedInPostCard & CopyButton: enforced word breaking, responsive padding, and min 36px tap targets.
+- HistoryPanel: refined slide-in drawer sizing on mobile, added text truncation, and expanded touch targets for entry loading, copying, and deletion.
+- Three.js AmbientNetwork3D & Layout: scaled mesh for small screens, contained canvas within viewport bounds, and enforced horizontal overflow prevention across html and body.
+- EmptyState & Custom Error Pages: tuned mobile padding and elevated button touch targets to meet mobile accessibility standards.
+
