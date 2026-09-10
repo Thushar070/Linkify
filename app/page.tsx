@@ -181,16 +181,16 @@ function HomeContent() {
     >
       {/* Top Header */}
       <header className="border-b border-border backdrop-blur-md sticky top-0 z-20 bg-background/80">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="max-w-5xl mx-auto px-3 sm:px-6 py-2.5 sm:py-5 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <button
               type="button"
               onClick={() => setIsHistoryOpen((prev) => !prev)}
-              className="p-2 rounded-xl border border-border bg-surface hover:bg-surface-hover text-text transition-all cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text flex items-center gap-1.5"
+              className="h-9 px-2 sm:px-3 rounded-xl border border-border bg-surface hover:bg-surface-hover text-text transition-all cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text flex items-center justify-center gap-1.5 shrink-0 select-none"
               title={isHistoryOpen ? "Close history sidebar" : "Open history sidebar"}
               aria-label={isHistoryOpen ? "Close history sidebar" : "Open history sidebar"}
             >
-              <PanelLeft className="w-4 h-4 text-text" />
+              <PanelLeft className="w-4 h-4 text-text shrink-0" />
               <span className="text-xs font-semibold hidden sm:inline">History</span>
               {history.length > 0 && (
                 <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-surface-subtle text-text-muted border border-border">
@@ -198,7 +198,7 @@ function HomeContent() {
                 </span>
               )}
             </button>
-            <h1 className="text-xl sm:text-2xl font-black tracking-tight text-text select-none inline-flex items-baseline">
+            <h1 className="text-lg sm:text-2xl font-black tracking-tight text-text select-none inline-flex items-baseline truncate">
               Linkedinify
               <sup className="text-[0.5em] font-semibold text-text-muted ml-0.5 select-none">
                 ™
@@ -206,12 +206,12 @@ function HomeContent() {
             </h1>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Sound Toggle Button */}
             <button
               type="button"
               onClick={handleToggleSound}
-              className={`p-2 rounded-xl border transition-all cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text ${
+              className={`h-9 w-9 p-0 rounded-xl border transition-all cursor-pointer flex items-center justify-center shrink-0 select-none focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text ${
                 isSoundEnabled
                   ? "border-text bg-text text-background font-semibold shadow-xs"
                   : "border-border bg-surface text-text-muted hover:text-text hover:bg-surface-hover"
@@ -230,7 +230,7 @@ function HomeContent() {
             <button
               type="button"
               onClick={handleToggleTheme}
-              className="p-2 rounded-xl border border-border bg-surface hover:bg-surface-hover text-text transition-all cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text"
+              className="h-9 w-9 p-0 rounded-xl border border-border bg-surface hover:bg-surface-hover text-text transition-all cursor-pointer flex items-center justify-center shrink-0 select-none focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text"
               title={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
               aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
             >
@@ -274,8 +274,8 @@ function HomeContent() {
           />
 
           {/* Action Bar */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-1">
-            <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 pt-1">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
               <GenerateButton
                 onClick={handleGenerate}
                 loading={isLoading}
@@ -288,7 +288,7 @@ function HomeContent() {
                   type="button"
                   onClick={handleReset}
                   disabled={isLoading}
-                  className="px-5 py-3.5 rounded-xl border border-border bg-surface text-text hover:bg-surface-hover text-sm sm:text-base font-semibold inline-flex items-center justify-center gap-2 transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  className="w-full sm:w-auto min-h-[48px] px-5 py-3 rounded-xl border border-border bg-surface text-text hover:bg-surface-hover text-sm sm:text-base font-semibold inline-flex items-center justify-center gap-2 transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   <RotateCcw className="w-4 h-4 text-text-subtle" />
                   <span>Reset</span>
@@ -308,20 +308,20 @@ function HomeContent() {
         {/* Error notification banner */}
         {error && (
           <section
-            className="p-4 sm:p-5 rounded-xl border border-border bg-surface text-text flex items-start sm:items-center justify-between gap-4 text-sm sm:text-base animate-slide-up-fade shadow-xs"
+            className="p-4 sm:p-5 rounded-xl border border-border bg-surface text-text flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 text-sm sm:text-base animate-slide-up-fade shadow-xs"
             role="alert"
           >
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-8 h-8 rounded-lg bg-surface-subtle border border-border flex items-center justify-center shrink-0">
                 <AlertCircle className="w-4 h-4 text-text" />
               </div>
-              <span className="text-text text-sm sm:text-base font-medium leading-relaxed">{error}</span>
+              <span className="text-text text-xs sm:text-base font-medium leading-relaxed">{error}</span>
             </div>
             <button
               type="button"
               onClick={handleGenerate}
               disabled={isLoading || sentence.trim().length < 5}
-              className="px-3 py-1.5 rounded-lg border border-border bg-surface-subtle hover:bg-surface-hover text-text text-xs sm:text-sm font-semibold transition-colors cursor-pointer shrink-0 disabled:opacity-50 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="w-full sm:w-auto min-h-[40px] sm:min-h-0 px-3.5 py-2 sm:py-1.5 rounded-lg border border-border bg-surface-subtle hover:bg-surface-hover text-text text-xs sm:text-sm font-semibold transition-colors cursor-pointer shrink-0 disabled:opacity-50 text-center focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               Try again
             </button>
@@ -361,9 +361,9 @@ function HomeContent() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-16 border-t border-border py-8">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-text-subtle">
-          <div className="flex items-baseline gap-1">
+      <footer className="mt-12 sm:mt-16 border-t border-border py-6 sm:py-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center sm:items-baseline justify-between gap-3 sm:gap-4 text-center sm:text-left text-xs sm:text-sm text-text-subtle">
+          <div className="flex flex-wrap items-baseline justify-center sm:justify-start gap-1">
             <span className="font-semibold text-text inline-flex items-baseline">
               Linkedinify
               <sup className="text-[0.6em] font-semibold text-text-muted ml-0.5">

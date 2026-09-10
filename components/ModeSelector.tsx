@@ -8,6 +8,7 @@ export type LinkedinMode = "linkedinify" | "ceo" | "max-bs";
 export interface ModeOption {
   id: LinkedinMode;
   name: string;
+  shortName: string;
   tagline: string;
   description: string;
   icon: React.ComponentType<{ className?: string }>;
@@ -17,6 +18,7 @@ export const MODE_OPTIONS: ModeOption[] = [
   {
     id: "linkedinify",
     name: "LinkedInify",
+    shortName: "LinkedIn",
     tagline: "Thought Leader",
     description: "Classic viral storytelling, humblebrags & dramatic line breaks",
     icon: Sparkles,
@@ -24,6 +26,7 @@ export const MODE_OPTIONS: ModeOption[] = [
   {
     id: "ceo",
     name: "CEO Mode",
+    shortName: "CEO",
     tagline: "Executive",
     description: "Ruthless execution, quarterly velocity & unhinged hustle culture",
     icon: Briefcase,
@@ -31,6 +34,7 @@ export const MODE_OPTIONS: ModeOption[] = [
   {
     id: "max-bs",
     name: "Maximum Bullshit",
+    shortName: "Max BS",
     tagline: "Peak Satire",
     description: "Quantum corporate word salad, paradigm shifts & cosmic synergy",
     icon: Flame,
@@ -88,22 +92,23 @@ export default function ModeSelector({
   };
 
   return (
-    <div ref={containerRef} className="relative inline-block text-left">
-      {/* Compact trigger pill */}
+    <div ref={containerRef} className="relative inline-block text-left shrink-0">
+      {/* Compact trigger pill with mobile short name */}
       <button
         type="button"
         disabled={disabled}
         onClick={() => setIsOpen((prev) => !prev)}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
-        className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 select-none focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+        className={`inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-full border text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 select-none min-h-[36px] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
           isOpen
             ? "bg-surface-hover border-border text-text shadow-sm ring-1 ring-border"
             : "bg-surface hover:bg-surface-hover border-border text-text"
         }`}
       >
         <CurrentIcon className="w-3.5 h-3.5 shrink-0 text-text" />
-        <span className="font-semibold">{selectedOption.name}</span>
+        <span className="font-semibold hidden sm:inline">{selectedOption.name}</span>
+        <span className="font-semibold sm:hidden text-xs">{selectedOption.shortName}</span>
         <ChevronDown
           className={`w-3.5 h-3.5 text-text-subtle transition-transform duration-200 ease-out ${
             isOpen ? "rotate-180 text-text" : ""
@@ -111,12 +116,12 @@ export default function ModeSelector({
         />
       </button>
 
-      {/* Floating Menu */}
+      {/* Floating Menu clamped to viewport */}
       {isOpen && (
         <div
           role="listbox"
           aria-label="Select generation persona"
-          className="absolute right-0 mt-2 w-72 sm:w-80 rounded-xl bg-surface border border-border shadow-2xl p-1.5 z-40 backdrop-blur-xl animate-slide-up-fade"
+          className="absolute right-0 mt-2 w-[calc(100vw-28px)] max-w-xs sm:w-80 rounded-xl bg-surface border border-border shadow-2xl p-1.5 z-40 backdrop-blur-xl animate-slide-up-fade max-h-[80vh] overflow-y-auto"
         >
           <div className="px-2.5 py-1.5 text-[11px] font-semibold text-text-subtle uppercase tracking-wider">
             Generation Persona
@@ -134,7 +139,7 @@ export default function ModeSelector({
                   role="option"
                   aria-selected={isSelected}
                   onClick={() => handleSelect(option.id)}
-                  className={`w-full text-left flex items-start gap-3 p-2.5 rounded-lg transition-colors duration-150 cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-1 focus-visible:ring-offset-background ${
+                  className={`w-full text-left flex items-start gap-3 p-2.5 sm:p-3 rounded-lg transition-colors duration-150 cursor-pointer min-h-[44px] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-text focus-visible:ring-offset-1 focus-visible:ring-offset-background ${
                     isSelected
                       ? "bg-surface-hover text-text font-medium border border-border"
                       : "hover:bg-surface-subtle text-text-muted hover:text-text border border-transparent"
@@ -146,14 +151,14 @@ export default function ModeSelector({
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-1.5">
-                      <span className="text-xs font-semibold text-text truncate">
+                      <span className="text-xs sm:text-sm font-semibold text-text truncate">
                         {option.name}
                       </span>
                       {isSelected && (
                         <Check className="w-3.5 h-3.5 text-text shrink-0" />
                       )}
                     </div>
-                    <p className="text-[11px] text-text-muted leading-snug mt-0.5 line-clamp-2">
+                    <p className="text-[11px] text-text-muted leading-relaxed mt-0.5">
                       {option.description}
                     </p>
                   </div>
